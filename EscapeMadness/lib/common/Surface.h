@@ -21,7 +21,7 @@ public:
 		return Surf_Return;
 	}
 
-	bool Draw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y) {
+	static bool Draw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y) {
 		if (Surf_Dest == NULL || Surf_Src == NULL) {
 			return false;
 		}
