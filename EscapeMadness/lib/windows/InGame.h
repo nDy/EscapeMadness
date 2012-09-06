@@ -2,7 +2,7 @@
 #define INGAME_H_
 
 #include "Event.h"
-#include "Structure.h"
+#include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
 
 class InGame: public Event, public Structure {
@@ -25,7 +25,7 @@ public:
 
 	}
 
-	void Render() const {
+	void Render(SDL_Surface* Display) {
 
 	}
 

@@ -2,7 +2,7 @@
 #define MENU_H_
 
 #include "Event.h"
-#include "Structure.h"
+#include "../common/Structure.h"
 
 class Menu: public Event, public Structure {
 private:

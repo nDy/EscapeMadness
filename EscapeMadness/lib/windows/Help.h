@@ -2,7 +2,7 @@
 #define HELP_H_
 
 #include "Event.h"
-#include "Structure.h"
+#include "../common/Structure.h"
 
 class Help: public Event, public Structure {
 private:

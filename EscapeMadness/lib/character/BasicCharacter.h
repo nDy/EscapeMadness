@@ -2,8 +2,9 @@
 #define _BASICCHARACTER_H_
 
 #include <SDL/SDL.h>
+#include "../common/Structure.h"
 
-class BasicCharacter {
+class BasicCharacter: public Structure{
 	SDL_Surface* img;
 public:
 	BasicCharacter() {
@@ -42,11 +43,9 @@ public:
 		//body.m_mass = mass;
 	}
 
-	void drawAt(SDL_Surface& g) {
-		//g.drawAnimation(animation, body.getPosition().x - initialImage.getWidth() / 2,body.getPosition().y - initialImage.getHeight() / 2);
+	void Render(SDL_Surface* Display) {
+
 	}
-
-
 
 	void resetJump() {
 		//jumping = 0;

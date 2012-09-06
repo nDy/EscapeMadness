@@ -7,11 +7,10 @@
 
 #include "SDL/SDL.h"
 
-#include "../lib/windows/Structure.h"
 #include "../lib/windows/Help.h"
 #include "../lib/windows/Menu.h"
 #include "../lib/windows/InGame.h"
-
+#include "../lib/common/Structure.h"
 enum {
 	MENU, INGAME, HELP
 };
