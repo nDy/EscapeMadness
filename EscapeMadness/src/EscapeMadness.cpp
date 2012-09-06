@@ -10,6 +10,7 @@
 #include "../lib/windows/Structure.h"
 #include "../lib/windows/Help.h"
 #include "../lib/windows/Menu.h"
+#include "../lib/windows/InGame.h"
 
 enum {
 	MENU, INGAME, HELP
@@ -24,6 +25,7 @@ private:
 	bool Running;
 	int Current;
 	SDL_Surface* Display;
+
 
 public:
 

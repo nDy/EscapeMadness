@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "Structure.h"
+#include "../character/BasicCharacter.h"
 
 class InGame: public Event, public Structure {
 private:
