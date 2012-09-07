@@ -4,6 +4,7 @@
 #include "Event.h"
 #include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
+#include "../platform/Platform.h"
 
 class InGame: public Event, public Structure {
 private:
