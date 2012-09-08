@@ -22,6 +22,8 @@ public:
 		if (this->img == NULL)
 			return false;
 		return true;
+		b2FixtureDef* def;
+		this->body->CreateFixture(def);
 	}
 
 	void Render(SDL_Surface* Display) {

@@ -11,31 +11,35 @@
 #include "../lib/windows/Menu.h"
 #include "../lib/windows/InGame.h"
 #include "../lib/common/Structure.h"
+#include <iostream>
 enum {
 	MENU, INGAME, HELP
 };
 
-
-
-class EscapeMadness: public Structure{
+class EscapeMadness{
 
 private:
 
 	bool Running;
 	int Current;
 	SDL_Surface* Display;
-
+	InGame* ingame;
+	Menu* menu;
+	Help* help;
 
 public:
 
 	EscapeMadness() {
 		Display = NULL;
 		Running = true;
+		ingame = new InGame();
+		menu = new Menu();
+		help = new Help();
 	}
 
 	bool Init() {
 
-		Current = MENU;
+		Current = INGAME;
 
 		//Inicializacion de SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -46,6 +50,7 @@ public:
 				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
 			return false;
 		}
+		ingame->Init();
 
 		return true;
 	}
@@ -60,7 +65,7 @@ public:
 			break;
 
 		case INGAME:
-
+			ingame->Event(Event);
 			break;
 
 		case HELP:
@@ -69,18 +74,18 @@ public:
 		}
 	}
 
-	void Loop() const {
+	void Loop() {
 		switch (Current) {
 		case MENU:
-
+			this->Current = menu->Loop(Current);
 			break;
 
 		case INGAME:
-
+			this->Current = ingame->Loop(Current);
 			break;
 
 		case HELP:
-
+			this->Current = help->Loop(Current);
 			break;
 		}
 	}
@@ -92,7 +97,7 @@ public:
 			break;
 
 		case INGAME:
-
+			ingame->Render(display);
 			break;
 
 		case HELP:
@@ -103,9 +108,11 @@ public:
 
 	void Cleanup() const {
 		SDL_Quit();
+		ingame->Cleanup();
 	}
 
 	int Execute() {
+
 		if (Init() == false) {
 			return -1;
 		}
@@ -129,9 +136,10 @@ public:
 };
 
 int main(int argc, char* argv[]) {
+	std::cout << "init passed" << std::endl;
 	EscapeMadness* EscapeMadnessTheGame;
-
+	std::cout << "init passed2" << std::endl;
 	EscapeMadnessTheGame = new EscapeMadness();
-
+	std::cout << "init passed3" << std::endl;
 	return EscapeMadnessTheGame->Execute();
 }

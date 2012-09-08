@@ -2,19 +2,28 @@
 #define INGAME_H_
 
 #include "Event.h"
+#include <SDL/SDL.h>
+#include <Box2D/Box2D.h>
 #include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
+#include <iostream>
 
-class InGame: public Event, public Structure {
+class InGame{
 private:
-
+	b2World* world;
+	Platform* plat;
 public:
 	InGame() {
-
+		std::cout<<"plataforma"<<std::endl;
+		plat = new Platform(1,2,this->world);
+		std::cout<<"plataforma instanciada"<<std::endl;
 	}
 
 	bool Init() {
+		b2Vec2 gravity(0.0f, -10.0f);
+		this->world = new b2World(gravity);
+		plat = new Platform(0,1,this->world);
 		return true;
 	}
 
@@ -22,15 +31,15 @@ public:
 
 	}
 
-	void Loop() const {
-
+	int Loop(int Current) {
+		return Current;
 	}
 
 	void Render(SDL_Surface* Display) {
 
 	}
 
-	void Cleanup() const {
+	void Cleanup() {
 
 	}
 

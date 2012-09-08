@@ -4,7 +4,7 @@
 #include "Event.h"
 #include "../common/Structure.h"
 
-class Help: public Event, public Structure {
+class Help{
 private:
 
 public:
@@ -20,8 +20,8 @@ public:
 
 	}
 
-	void Loop() const {
-
+	int Loop(int Current) {
+		return Current;
 	}
 
 	void Render() const {

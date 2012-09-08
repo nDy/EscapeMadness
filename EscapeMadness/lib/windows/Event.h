@@ -6,9 +6,6 @@
 class Event {
 public:
 	Event();
-
-	virtual ~Event();
-
 	virtual void CheckEvent(SDL_Event* event) {
 		switch (event->type) {
 		case SDL_ACTIVEEVENT: {

@@ -12,12 +12,13 @@
 #include <Box2D/Box2D.h>
 #include "../common/Structure.h"
 #include "../common/Surface.h"
+#include <iostream>
 
 enum {
 	STATIC, VERTICAL, HORIZONTAL, MIXED, LENGTH = 300
 };
 
-class Platform: public Structure {
+class Platform {
 
 private:
 	b2Body* body;
@@ -26,13 +27,19 @@ private:
 	float movementlength;
 
 public:
-	Platform(int x, int y, b2World world) {
-		b2BodyDef* def;
-		def->type = b2_kinematicBody;
-		def->position.Set(x, y);
-		body = world.CreateBody(def);
+	Platform(int x, int y, b2World*& world) {
+		b2BodyDef bodyDef;
+
+		bodyDef.type = b2_kinematicBody;
+		bodyDef.position.Set(x, y);
+
+		this->body = world->CreateBody(&bodyDef);
+
+		std::cout << "plataforma creada" << std::endl;
+
 		type = STATIC;
 		this->movementlength = 2 * LENGTH;
+
 	}
 
 	Platform(int x, int y, float movementlength, short orientation,
@@ -45,38 +52,65 @@ public:
 		this->movementlength = movementlength;
 	}
 
-	Platform(int x, int y, float angle, b2World world) {
+	Platform(int x, int y, float angle, b2World*& world) {
 		b2BodyDef* def;
 		def->type = b2_kinematicBody;
 		def->position.Set(x, y);
-		body = world.CreateBody(def);
+		body = world->CreateBody(def);
 		type = STATIC;
 		this->movementlength = 2 * LENGTH;
 	}
 
-	Platform(int x, int y, float angle, float movementlength, b2World world) {
+	Platform(int x, int y, float angle, float movementlength, b2World*& world) {
 		b2BodyDef* def;
 		def->type = b2_kinematicBody;
 		def->position.Set(x, y);
-		body = world.CreateBody(def);
+		body = world->CreateBody(def);
 		type = MIXED;
 		this->movementlength = movementlength;
 	}
 
 	Platform(int x, int y, float angle, float movementlength, short orientation,
-			b2World world) {
+			b2World*& world) {
 		b2BodyDef* def;
 		def->type = b2_kinematicBody;
 		def->position.Set(x, y);
-		body = world.CreateBody(def);
+		body = world->CreateBody(def);
 		type = orientation;
 		this->movementlength = movementlength;
+	}
+
+	bool Init() {
+		this->img = Surface::Load((char*) "../res.bmp");
+		if (this->img == NULL)
+			return false;
+		return true;
+
+		b2PolygonShape box;
+
+		box.SetAsBox(50.0f, 10.0f);
+
+		this->body->CreateFixture(&box, 0.0f);
+	}
+
+	void Event(SDL_Event* Event) {
+
+	}
+
+	void Loop() {
+
 	}
 
 	void Render(SDL_Surface* Display) {
 		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
 				Display->h - this->body->GetTransform().p.y);
 	}
+
+	void Cleanup(b2World* world) {
+		world->DestroyBody(this->body);
+		SDL_FreeSurface(this->img);
+	}
+
 };
 
 #endif /* PLATFORM_H_ */
