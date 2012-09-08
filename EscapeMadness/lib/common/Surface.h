@@ -9,7 +9,7 @@ class Surface {
 public:
 	Surface();
 
-	static SDL_Surface* Load(char* File) {
+	static SDL_Surface* Load(const char* File) {
 		SDL_Surface* Surf_Temp = NULL;
 		SDL_Surface* Surf_Return = NULL;
 

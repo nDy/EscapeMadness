@@ -5,7 +5,7 @@
 // Description : Escape Madness: The Game
 //============================================================================
 
-#include "SDL/SDL.h"
+#include <SDL/SDL.h>
 
 #include "../lib/windows/Help.h"
 #include "../lib/windows/Menu.h"
