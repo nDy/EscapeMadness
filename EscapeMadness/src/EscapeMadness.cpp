@@ -50,6 +50,11 @@ public:
 				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
 			return false;
 		}
+
+		if( TTF_Init() == -1 ){
+			return false;
+		}
+
 		ingame->Init();
 
 		return true;

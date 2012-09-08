@@ -2,6 +2,8 @@
 #define _SURFACE_H_
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
+#include <string>
 
 class Surface {
 public:
@@ -36,19 +38,17 @@ public:
 		return true;
 	}
 
-	static bool DrawText(string text, SDL_Surface* Dest, int X, int Y, int r, int g, int b, int size) {
-		if (Surf_Dest == NULL || Surf_Src == NULL) {
+	static bool DrawText(const char* text, SDL_Surface* Dest, int X, int Y, Uint8 r, Uint8 g, Uint8 b, int size) {
+		if (Dest == NULL) {
 			return false;
 		}
 
 		SDL_Surface* message = NULL;
 		TTF_Font* font = NULL;
 		SDL_Color textColor = { r, g, b };
-		font = TTF_OpenFont( "font.ttf", size );
+		font = TTF_OpenFont( "../res/font.ttf", size );
 		message = TTF_RenderText_Solid( font, text, textColor );
-		apply_surface( 0, 150, message, Dest );
-
-		return true;
+		return Draw(Dest, message, X, Y);;
 	}
 
 };
