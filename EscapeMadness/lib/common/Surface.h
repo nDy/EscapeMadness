@@ -35,6 +35,22 @@ public:
 
 		return true;
 	}
+
+	static bool DrawText(string text, SDL_Surface* Dest, int X, int Y, int r, int g, int b, int size) {
+		if (Surf_Dest == NULL || Surf_Src == NULL) {
+			return false;
+		}
+
+		SDL_Surface* message = NULL;
+		TTF_Font* font = NULL;
+		SDL_Color textColor = { r, g, b };
+		font = TTF_OpenFont( "font.ttf", size );
+		message = TTF_RenderText_Solid( font, text, textColor );
+		apply_surface( 0, 150, message, Dest );
+
+		return true;
+	}
+
 };
 
 #endif
