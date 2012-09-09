@@ -6,12 +6,13 @@
 //============================================================================
 
 #include <SDL/SDL.h>
+#include <iostream>
 
 #include "../lib/windows/Help.h"
 #include "../lib/windows/Menu.h"
 #include "../lib/windows/InGame.h"
 #include "../lib/common/Structure.h"
-#include <iostream>
+
 enum {
 	MENU, INGAME, HELP
 };
@@ -63,15 +64,15 @@ public:
 		}
 		switch (Current) {
 		case MENU:
-			menu->Event(Event);
+			menu->CheckEvent(Event);
 			break;
 
 		case INGAME:
-			ingame->Event(Event);
+			ingame->CheckEvent(Event);
 			break;
 
 		case HELP:
-			help->Event(Event);
+			help->CheckEvent(Event);
 			break;
 		}
 	}
@@ -106,6 +107,8 @@ public:
 			help->Render(display);
 			break;
 		}
+
+		SDL_Flip(display);
 	}
 
 	void Cleanup() const {

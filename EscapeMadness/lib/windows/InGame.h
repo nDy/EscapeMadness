@@ -9,7 +9,7 @@
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
 
-class InGame{
+class InGame: public Event{
 private:
 	b2World* world;
 	Platform* plat;
@@ -25,10 +25,6 @@ public:
 		this->world = new b2World(gravity);
 		plat = new Platform(0,1,this->world);
 		return true;
-	}
-
-	void Event(SDL_Event* Event) {
-
 	}
 
 	int Loop(int Current) {

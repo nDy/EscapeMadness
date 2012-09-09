@@ -4,10 +4,13 @@
 #include <SDL/SDL.h>
 #include "Event.h"
 #include "../common/Structure.h"
+#include "../common/Button.h"
 
-class Menu {
+class Menu: public Event{
 private:
 	SDL_Surface* Background;
+	Button* game;
+	Button* help;
 public:
 	Menu() {
 
@@ -15,20 +18,20 @@ public:
 
 	bool Init() {
 
-		Background = Surface::Load("../res/bg.bmp");
+		Background = Surface::Load("./res/bg.bmp");
 
 		if (Background == NULL) {
 			return false;
 		}
+
 		if (TTF_Init() == -1) {
 			return false;
 		}
 
+		this->game = new Button((char*)"Jugar",20,20,Background);
+		this->help = new Button((char*)"Ayuda",20,120,Background);
+
 		return true;
-	}
-
-	void Event(SDL_Event* Event) {
-
 	}
 
 	int Loop(int Current) {
@@ -39,11 +42,9 @@ public:
 
 		Surface::Draw(Display, Background, 0, 0);
 
-		Surface::DrawText("Jugar", Display, 20, 20, 255, 255, 255,
-						200);
+		this->game->render();
 
-		Surface::DrawText("Ayuda", Display, 20, 320, 255, 255, 255,
-				200);
+		this->help->render();
 
 	}
 
@@ -80,12 +81,15 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
+		std::cout<<"ButtonDown"<<std::endl;
+		help->isClicked(mX,mY);
 	}
 
 	void OnLButtonUp(int mX, int mY) {
 	}
 
 	void OnRButtonDown(int mX, int mY) {
+
 	}
 
 	void OnRButtonUp(int mX, int mY) {

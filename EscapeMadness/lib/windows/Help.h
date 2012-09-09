@@ -28,10 +28,6 @@ public:
 		return true;
 	}
 
-	void Event(SDL_Event* Event) {
-
-	}
-
 	int Loop(int Current) {
 		return Current;
 	}
