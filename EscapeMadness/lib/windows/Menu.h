@@ -6,7 +6,7 @@
 #include "../common/Structure.h"
 #include "../common/Button.h"
 
-class Menu: public Event,public Structure{
+class Menu: public Event, public Structure {
 private:
 	SDL_Surface* Background;
 	Button* game;
@@ -29,18 +29,18 @@ public:
 			return false;
 		}
 
-		this->game = new Button((char*)"Jugar",20,20,Background);
-		this->help = new Button((char*)"Ayuda",20,120,Background);
+		this->game = new Button((char*) "Jugar", 20, 20, Background);
+		this->help = new Button((char*) "Ayuda", 20, 120, Background);
 
 		return true;
 	}
 
 	int Loop() {
-		if(Current != Structure::MENU){
+		if (Current != Structure::MENU) {
 			this->Cleanup();
 		}
 		return Current;
-		}
+	}
 
 	void Render(SDL_Surface* Display) {
 
@@ -53,7 +53,7 @@ public:
 	}
 
 	void Cleanup() const {
-		SDL_FreeSurface (Background);
+		SDL_FreeSurface(Background);
 	}
 
 	//Events
@@ -84,8 +84,11 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-		if (help->isClicked(mX,mY)){
+		if (help->isClicked(mX, mY)) {
 			Current = Structure::HELP;
+		}
+		if (game->isClicked(mX, mY)) {
+			Current = Structure::INGAME;
 		}
 	}
 

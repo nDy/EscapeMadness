@@ -13,7 +13,7 @@
 #include "../lib/windows/InGame.h"
 #include "../lib/common/Structure.h"
 
-class EscapeMadness: public Structure{
+class EscapeMadness: public Structure {
 
 private:
 
@@ -29,9 +29,9 @@ public:
 	EscapeMadness() {
 		Display = NULL;
 		Running = true;
-		//ingame = new InGame();
-		menu = new Menu(Structure::MENU);
 		help = new Help(Structure::HELP);
+		menu = new Menu(Structure::MENU);
+		//ingame = new InGame(Structure::INGAME);
 	}
 
 	bool Init() {
@@ -39,17 +39,20 @@ public:
 		Current = Structure::MENU;
 
 		//Inicializacion de SDL
-		if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 			return false;
-		}
-		//Inicializacion de ventana
+
+		//Inicializacion de Display
 		if ((Display = SDL_SetVideoMode(640, 480, 32,
-				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
 			return false;
-		}
-		help->Init();
+
+		//Inicializacion de ventanas
+		if (!menu->Init())
+			return false;
+		if (!help->Init())
+			return false;
 		//ingame->Init();
-		menu->Init();
 
 		return true;
 	}
@@ -74,6 +77,7 @@ public:
 	}
 
 	int Loop() {
+
 		switch (Current) {
 		case Structure::MENU:
 			Current = menu->Loop();
@@ -86,6 +90,7 @@ public:
 		case Structure::HELP:
 			Current = help->Loop();
 			break;
+
 		}
 		return Current;
 	}
@@ -111,6 +116,8 @@ public:
 	void Cleanup() const {
 		SDL_Quit();
 		menu->Cleanup();
+		help->Cleanup();
+		ingame->Cleanup();
 	}
 
 	int Execute() {
@@ -130,7 +137,6 @@ public:
 			Render(this->Display);
 
 		}
-
 
 		Cleanup();
 

@@ -32,6 +32,7 @@ public:
 	bool isClicked(int mX, int mY) {
 		if(mX>=x&&mX<=x+50&&mY>=y&&mY<=y+50)
 			return true;
+		return false;
 	}
 
 };

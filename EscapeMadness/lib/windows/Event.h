@@ -9,6 +9,7 @@ public:
 
 	Event() {
 	}
+
 	void CheckEvent(SDL_Event* event) {
 		switch (event->type) {
 		case SDL_ACTIVEEVENT: {
