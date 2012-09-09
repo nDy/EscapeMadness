@@ -4,6 +4,7 @@
 #include "Event.h"
 #include "../common/Surface.h"
 #include <SDL/SDL.h>
+#include <iostream>
 
 class Help: public Event {
 private:
@@ -14,7 +15,16 @@ public:
 	}
 
 	bool Init() {
+
 		Background = Surface::Load("../res/bg.bmp");
+
+		if (Background==NULL){
+			return false;
+		}
+		if( TTF_Init() == -1 ){
+			return false;
+		}
+
 		return true;
 	}
 
@@ -26,13 +36,17 @@ public:
 		return Current;
 	}
 
-	void Render(SDL_Surface*& Display) {
-		Surface::Draw(Display, Background, 0, 0);
-		Surface::DrawText("Volver al menu", Display, 20, 20, 255, 255, 255, 20);
+	void Render(SDL_Surface* Display) {
+
+		Surface::Draw(Display, Background,0, 0);
+
+		Surface::DrawText("Volver al menu", Display, 20, 20, 255, 255, 255, 200);
+
 	}
 
 	void Cleanup() const {
 		SDL_FreeSurface(Background);
+		TTF_Quit();
 	}
 
 	//Events
@@ -65,8 +79,7 @@ public:
 
 
 	void OnMouseWheel(bool Up, bool Down) {
-	}
-	    //Not implemented
+	}//Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
 	}

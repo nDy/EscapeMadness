@@ -32,14 +32,14 @@ public:
 	EscapeMadness() {
 		Display = NULL;
 		Running = true;
-		ingame = new InGame();
+		//ingame = new InGame();
 		menu = new Menu();
-		help = new Help();
+		//help = new Help();
 	}
 
 	bool Init() {
 
-		Current = INGAME;
+		Current = MENU;
 
 		//Inicializacion de SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -50,12 +50,9 @@ public:
 				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
 			return false;
 		}
-
-		if( TTF_Init() == -1 ){
-			return false;
-		}
-
-		ingame->Init();
+		//help->Init();
+		//ingame->Init();
+		menu->Init();
 
 		return true;
 	}
@@ -66,7 +63,7 @@ public:
 		}
 		switch (Current) {
 		case MENU:
-
+			menu->Event(Event);
 			break;
 
 		case INGAME:
@@ -74,7 +71,7 @@ public:
 			break;
 
 		case HELP:
-
+			help->Event(Event);
 			break;
 		}
 	}
@@ -98,7 +95,7 @@ public:
 	void Render(SDL_Surface* display) {
 		switch (Current) {
 		case MENU:
-
+			menu->Render(display);
 			break;
 
 		case INGAME:
@@ -106,14 +103,14 @@ public:
 			break;
 
 		case HELP:
-
+			help->Render(display);
 			break;
 		}
 	}
 
 	void Cleanup() const {
 		SDL_Quit();
-		ingame->Cleanup();
+		menu->Cleanup();
 	}
 
 	int Execute() {
@@ -141,10 +138,8 @@ public:
 };
 
 int main(int argc, char* argv[]) {
-	std::cout << "init passed" << std::endl;
 	EscapeMadness* EscapeMadnessTheGame;
-	std::cout << "init passed2" << std::endl;
 	EscapeMadnessTheGame = new EscapeMadness();
-	std::cout << "init passed3" << std::endl;
+
 	return EscapeMadnessTheGame->Execute();
 }

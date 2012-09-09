@@ -4,10 +4,10 @@
 #include "Event.h"
 #include <SDL/SDL.h>
 #include <Box2D/Box2D.h>
+
 #include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
-#include <iostream>
 
 class InGame{
 private:
