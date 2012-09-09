@@ -9,10 +9,11 @@
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
 
-class InGame: public Event{
+class InGame: public Event, public Structure {
 private:
 	b2World* world;
 	Platform* plat;
+	int Current;
 public:
 	InGame() {
 		std::cout<<"plataforma"<<std::endl;
@@ -27,9 +28,12 @@ public:
 		return true;
 	}
 
-	int Loop(int Current) {
+	int Loop() {
+		if(Current != Structure::INGAME){
+			this->Cleanup();
+		}
 		return Current;
-	}
+		}
 
 	void Render(SDL_Surface* Display) {
 

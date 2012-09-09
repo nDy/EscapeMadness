@@ -13,11 +13,7 @@
 #include "../lib/windows/InGame.h"
 #include "../lib/common/Structure.h"
 
-enum {
-	MENU, INGAME, HELP
-};
-
-class EscapeMadness{
+class EscapeMadness: public Structure{
 
 private:
 
@@ -34,13 +30,13 @@ public:
 		Display = NULL;
 		Running = true;
 		//ingame = new InGame();
-		menu = new Menu();
-		//help = new Help();
+		menu = new Menu(Structure::MENU);
+		help = new Help(Structure::HELP);
 	}
 
 	bool Init() {
 
-		Current = MENU;
+		Current = Structure::MENU;
 
 		//Inicializacion de SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -51,7 +47,7 @@ public:
 				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
 			return false;
 		}
-		//help->Init();
+		help->Init();
 		//ingame->Init();
 		menu->Init();
 
@@ -63,47 +59,48 @@ public:
 			Running = false;
 		}
 		switch (Current) {
-		case MENU:
+		case Structure::MENU:
 			menu->CheckEvent(Event);
 			break;
 
-		case INGAME:
+		case Structure::INGAME:
 			ingame->CheckEvent(Event);
 			break;
 
-		case HELP:
+		case Structure::HELP:
 			help->CheckEvent(Event);
 			break;
 		}
 	}
 
-	void Loop() {
+	int Loop() {
 		switch (Current) {
-		case MENU:
-			this->Current = menu->Loop(Current);
+		case Structure::MENU:
+			Current = menu->Loop();
 			break;
 
-		case INGAME:
-			this->Current = ingame->Loop(Current);
+		case Structure::INGAME:
+			Current = ingame->Loop();
 			break;
 
-		case HELP:
-			this->Current = help->Loop(Current);
+		case Structure::HELP:
+			Current = help->Loop();
 			break;
 		}
+		return Current;
 	}
 
 	void Render(SDL_Surface* display) {
 		switch (Current) {
-		case MENU:
+		case Structure::MENU:
 			menu->Render(display);
 			break;
 
-		case INGAME:
+		case Structure::INGAME:
 			ingame->Render(display);
 			break;
 
-		case HELP:
+		case Structure::HELP:
 			help->Render(display);
 			break;
 		}
@@ -128,10 +125,12 @@ public:
 			while (SDL_PollEvent(&event)) {
 				Event(&event);
 			}
-
 			Loop();
+
 			Render(this->Display);
+
 		}
+
 
 		Cleanup();
 

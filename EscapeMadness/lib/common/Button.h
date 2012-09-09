@@ -31,8 +31,7 @@ public:
 
 	bool isClicked(int mX, int mY) {
 		if(mX>=x&&mX<=x+50&&mY>=y&&mY<=y+50)
-			std::cout<<"Works!"<<std::endl;
-		return false;
+			return true;
 	}
 
 };

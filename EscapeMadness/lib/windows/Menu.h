@@ -6,14 +6,15 @@
 #include "../common/Structure.h"
 #include "../common/Button.h"
 
-class Menu: public Event{
+class Menu: public Event,public Structure{
 private:
 	SDL_Surface* Background;
 	Button* game;
 	Button* help;
+	int Current;
 public:
-	Menu() {
-
+	Menu(int id) {
+		Current = id;
 	}
 
 	bool Init() {
@@ -34,9 +35,12 @@ public:
 		return true;
 	}
 
-	int Loop(int Current) {
+	int Loop() {
+		if(Current != Structure::MENU){
+			this->Cleanup();
+		}
 		return Current;
-	}
+		}
 
 	void Render(SDL_Surface* Display) {
 
@@ -50,7 +54,6 @@ public:
 
 	void Cleanup() const {
 		SDL_FreeSurface (Background);
-		TTF_Quit();
 	}
 
 	//Events
@@ -81,8 +84,9 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-		std::cout<<"ButtonDown"<<std::endl;
-		help->isClicked(mX,mY);
+		if (help->isClicked(mX,mY)){
+			Current = Structure::HELP;
+		}
 	}
 
 	void OnLButtonUp(int mX, int mY) {
