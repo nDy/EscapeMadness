@@ -8,9 +8,12 @@
 #include "../common/Surface.h"
 
 class BasicCharacter: public Structure {
+
 	b2Body* body;
 	SDL_Surface* img;
+
 public:
+
 	BasicCharacter(float x, float y, b2World*& world) {
 		b2BodyDef* def;
 		def = new b2BodyDef();
@@ -21,15 +24,21 @@ public:
 
 	bool Init() {
 		this->img = Surface::Load((char*) "./res/player.bmp");
-			return false;
-		return true;
 		b2FixtureDef* def;
+		def = new b2FixtureDef();
+		b2PolygonShape dynamicBox;
+		dynamicBox.SetAsBox(1.0f, 1.0f);
+		def->shape = &dynamicBox;
+		def->density = 1.0;
 		this->body->CreateFixture(def);
+
+		return true;
 	}
 
 	void Render(SDL_Surface* Display) {
 		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
 				Display->h - this->body->GetTransform().p.y);
+
 	}
 
 	void Cleanup() const {

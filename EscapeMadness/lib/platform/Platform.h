@@ -28,14 +28,12 @@ private:
 
 public:
 	Platform(int x, int y, b2World*& world) {
-		b2BodyDef bodyDef;
-
-		bodyDef.type = b2_kinematicBody;
-		bodyDef.position.Set(x, y);
-
-		this->body = world->CreateBody(&bodyDef);
-
+		b2BodyDef* bodyDef;
+		bodyDef = new b2BodyDef();
+		bodyDef->type = b2_kinematicBody;
+		bodyDef->position.Set(x, y);
 		std::cout << "plataforma creada" << std::endl;
+		this->body = world->CreateBody(bodyDef);
 
 		type = STATIC;
 		this->movementlength = 2 * LENGTH;
@@ -81,7 +79,7 @@ public:
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "../res.bmp");
+		this->img = Surface::Load((char*) "../res/platform.bmp");
 		if (this->img == NULL)
 			return false;
 		return true;
@@ -104,6 +102,8 @@ public:
 	void Render(SDL_Surface* Display) {
 		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
 				Display->h - this->body->GetTransform().p.y);
+		std::cout << this->body->GetTransform().p.x << " "
+				<< Display->h - this->body->GetTransform().p.y << std::endl;
 	}
 
 	void Cleanup(b2World* world) {

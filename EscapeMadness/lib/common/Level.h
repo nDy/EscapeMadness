@@ -10,17 +10,18 @@
 
 #include <Box2D/Box2D.h>
 #include "../character/BasicCharacter.h"
+#include "../platform/Platform.h"
 
 class Level {
 private:
 	b2World* world;
 	BasicCharacter * player;
 	SDL_Surface* Background;
+	Platform** platform;
 
 public:
 
-	Level(){
-
+	Level() {
 	}
 
 	bool init() {
@@ -34,7 +35,10 @@ public:
 
 		player = new BasicCharacter(0, 200, world);
 
+		platform = new Platform*[20];
+		platform[0] = new Platform(0, 100, world);
 		player->Init();
+		platform[0]->Init();
 
 		return true;
 	}
@@ -45,16 +49,19 @@ public:
 	}
 
 	void loop() {
-		world->Step(1/60, 6, 2);
+		world->Step(.5, 6, 2);
 	}
 
 	void render(SDL_Surface *Display) {
 		Surface::Draw(Display, Background, 0, 0);
 
 		player->Render(Display);
+
+		platform[0]->Render(Display);
+
 	}
 
-	BasicCharacter * getPlayer(){
+	BasicCharacter * getPlayer() {
 		return this->player;
 	}
 
