@@ -3,6 +3,7 @@
 
 #include <SDL/SDL.h>
 #include <Box2D/Box2D.h>
+#include <iostream>
 #include "../common/Structure.h"
 #include "../common/Surface.h"
 
@@ -10,16 +11,16 @@ class BasicCharacter: public Structure {
 	b2Body* body;
 	SDL_Surface* img;
 public:
-	BasicCharacter(float x, float y, b2World& world) {
+	BasicCharacter(float x, float y, b2World*& world) {
 		b2BodyDef* def;
+		def = new b2BodyDef();
 		def->type = b2_dynamicBody;
 		def->position.Set(x, y);
-		body = world.CreateBody(def);
+		body = world->CreateBody(def);
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "../res.bmp");
-		if (this->img == NULL)
+		this->img = Surface::Load((char*) "./res/player.bmp");
 			return false;
 		return true;
 		b2FixtureDef* def;
@@ -31,9 +32,12 @@ public:
 				Display->h - this->body->GetTransform().p.y);
 	}
 
-	void Cleanup(b2World* world) {
-		world->DestroyBody(this->body);
+	void Cleanup() const {
 		SDL_FreeSurface(this->img);
+	}
+
+	int Loop() {
+		return 0;
 	}
 
 	SDL_Surface* getImg() {
@@ -50,7 +54,10 @@ public:
 		// jumping++;
 	}
 
-	// }
+	int wasHit() {
+		//return player contacts
+		return 0;
+	}
 
 	void moveRight() {
 		body->ApplyForce(b2Vec2(5, 0), b2Vec2(0, 0));

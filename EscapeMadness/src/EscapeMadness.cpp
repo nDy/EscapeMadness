@@ -31,7 +31,10 @@ public:
 		Running = true;
 		help = new Help(Structure::HELP);
 		menu = new Menu(Structure::MENU);
-		//ingame = new InGame(Structure::INGAME);
+		ingame = new InGame(Structure::INGAME);
+	}
+
+	~EscapeMadness() {
 	}
 
 	bool Init() {
@@ -52,7 +55,8 @@ public:
 			return false;
 		if (!help->Init())
 			return false;
-		//ingame->Init();
+		if (!ingame->Init())
+			return false;
 
 		return true;
 	}
