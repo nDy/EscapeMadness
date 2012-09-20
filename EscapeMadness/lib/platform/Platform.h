@@ -25,6 +25,7 @@ private:
 	SDL_Surface* img;
 	short type;
 	float movementlength;
+	int x, y;
 
 public:
 	Platform(int x, int y, b2World*& world) {
@@ -37,6 +38,8 @@ public:
 
 		type = STATIC;
 		this->movementlength = 2 * LENGTH;
+		this->x = x;
+		this->y = y;
 
 	}
 
@@ -79,16 +82,16 @@ public:
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "../res/platform.bmp");
-		if (this->img == NULL)
-			return false;
+		this->img = Surface::Load((char*) "./res/platform.bmp");
+		b2FixtureDef* def;
+		def = new b2FixtureDef();
+		b2PolygonShape dynamicBox;
+		dynamicBox.SetAsBox(100.0f, 12.0f);
+		def->shape = &dynamicBox;
+		def->density = 1.0;
+		this->body->CreateFixture(def);
+
 		return true;
-
-		b2PolygonShape box;
-
-		box.SetAsBox(50.0f, 10.0f);
-
-		this->body->CreateFixture(&box, 0.0f);
 	}
 
 	void Event(SDL_Event* Event) {
@@ -96,14 +99,11 @@ public:
 	}
 
 	void Loop() {
-
 	}
 
 	void Render(SDL_Surface* Display) {
 		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
 				Display->h - this->body->GetTransform().p.y);
-		std::cout << this->body->GetTransform().p.x << " "
-				<< Display->h - this->body->GetTransform().p.y << std::endl;
 	}
 
 	void Cleanup(b2World* world) {

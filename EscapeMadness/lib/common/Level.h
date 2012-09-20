@@ -33,7 +33,7 @@ public:
 
 		world = new b2World(b2Vec2(0, -9.8));
 
-		player = new BasicCharacter(0, 200, world);
+		player = new BasicCharacter(50, 200, world);
 
 		platform = new Platform*[20];
 		platform[0] = new Platform(0, 100, world);
@@ -50,6 +50,7 @@ public:
 
 	void loop() {
 		world->Step(.5, 6, 2);
+		platform[0]->Loop();
 	}
 
 	void render(SDL_Surface *Display) {

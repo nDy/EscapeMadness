@@ -38,7 +38,8 @@ public:
 	void Render(SDL_Surface* Display) {
 		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
 				Display->h - this->body->GetTransform().p.y);
-
+		std::cout << this->body->GetTransform().p.x << " "
+						<< Display->h - this->body->GetTransform().p.y << std::endl;
 	}
 
 	void Cleanup() const {
