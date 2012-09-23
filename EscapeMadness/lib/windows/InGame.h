@@ -26,12 +26,13 @@ public:
 
 		MoveRight = false;
 		MoveLeft = false;
+
 	}
 
 	bool Init() {
 
 		lvl = new Level();
-		lvl->init();
+		lvl->Init();
 
 		return true;
 	}
@@ -47,13 +48,14 @@ public:
 		if (MoveLeft)
 			movePlayer(1);
 
-		lvl->loop();
+		lvl->Loop();
+
 		return Current;
 
 	}
 
-	void movePlayer(int LR){
-		switch(LR){
+	void movePlayer(int LR) {
+		switch (LR) {
 		case 0:
 			this->lvl->getPlayer()->moveRight();
 			break;
@@ -63,16 +65,23 @@ public:
 		}
 	}
 
-	void Render(SDL_Surface* Display) {
+	void Render(SDL_Surface* Display, float camera = 0) {
 
-		lvl->render(Display);
+		lvl->Render(Display);
+
+		if (lvl->finished()) {
+			Surface::DrawText("Nivel terminado", Display, 20, 20, 255, 255, 255,
+					20);
+			Surface::DrawText("Presiona Escape para continuar", Display, 20, 50,
+					255, 255, 255, 20);
+		}
 
 		//Draw HUD
 
 	}
 
 	void Cleanup() const {
-
+		lvl->Cleanup();
 	}
 
 	//Events
@@ -93,7 +102,7 @@ public:
 
 		if (sym == SDLK_LEFT)
 			this->MoveLeft = true;
-
+		//this->lvl->getPlayer()->moveLeft();
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
@@ -115,6 +124,7 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
+		this->lvl->getPlayer()->Shoot(mX,mY);
 	}
 
 	void OnLButtonUp(int mX, int mY) {

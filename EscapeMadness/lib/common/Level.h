@@ -18,33 +18,37 @@ private:
 	BasicCharacter * player;
 	SDL_Surface* Background;
 	Platform** platform;
+	float camera;
 
 public:
 
 	Level() {
+
 	}
 
-	bool init() {
-		Background = Surface::Load("./res/bg.bmp");
+	bool Init() {
+		Background = Surface::Load("./res/Fondos/Fondo1.png");
 
 		if (Background == NULL) {
 			return false;
 		}
 
+		this->camera = 0;
+
 		world = new b2World(b2Vec2(0, -9.8));
 
-		player = new BasicCharacter(50, 200, world);
+		player = new BasicCharacter(475, 300, world);
 
 		platform = new Platform*[10];
 
-		for (int i = 0; i < 10; i++){
-			platform[i] = new Platform(300 * i, 100, world);
+		for (int i = 0; i < 10; i++) {
+			platform[i] = new Platform(150 + 300 * i, 100, world);
 		}
 
 		player->Init();
 
-		for (int i = 0; i < 10; i++){
-			platform[0]->Init();
+		for (int i = 0; i < 10; i++) {
+			platform[i]->Init();
 		}
 
 		return true;
@@ -55,7 +59,7 @@ public:
 		return 0;
 	}
 
-	void loop() {
+	void Loop() {
 
 		for (int i = 0; i < 10; i++) {
 			platform[i]->Loop();
@@ -63,21 +67,48 @@ public:
 
 		world->Step(1.0f / 60.0f, 6, 2);
 
-	}
-//04247114492
-	void render(SDL_Surface *Display) {
-		Surface::Draw(Display, Background, -player->getBody()->getTransform().x, 0);
+		//fix camera
 
-		player->Render(Display);
+		if (player->getBody()->GetTransform().p.x - camera < 450)
+			camera = player->getBody()->GetTransform().p.x - 450;
+		if (camera + 1024 - player->getBody()->GetTransform().p.x < 450)
+			camera = player->getBody()->GetTransform().p.x - 1024 + 450;
+
+	}
+
+	void Render(SDL_Surface *Display) {
+
+		Surface::Draw(Display, Background, -camera-Background->w, 0);
+		Surface::Draw(Display, Background, -camera, 0);
+		Surface::Draw(Display, Background, Background->w - camera, 0);
+
+		player->Render(Display, camera);
 
 		for (int i = 0; i < 10; i++) {
-			platform[i]->Render(Display);
+			platform[i]->Render(Display, camera);
 		}
 
 	}
 
 	BasicCharacter * getPlayer() {
 		return this->player;
+	}
+
+	void Cleanup() {
+		SDL_FreeSurface(Background);
+
+		for (int i = 0; i < 10; i++) {
+			this->platform[i]->Cleanup(this->world);
+		}
+
+		this->player->Cleanup();
+
+	}
+
+	bool finished() {
+		if (player->getBody()->GetTransform().p.x >= 3000)
+			return true;
+		return false;
 	}
 
 };

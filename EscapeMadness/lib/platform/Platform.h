@@ -33,14 +33,13 @@ public:
 		bodyDef = new b2BodyDef();
 		bodyDef->type = b2_kinematicBody;
 		bodyDef->position.Set(x, y);
-		std::cout << "plataforma creada" << std::endl;
+
 		this->body = world->CreateBody(bodyDef);
 
 		type = STATIC;
 		this->movementlength = 2 * LENGTH;
 		this->x = x;
 		this->y = y;
-
 	}
 
 	Platform(int x, int y, float movementlength, short orientation,
@@ -82,13 +81,13 @@ public:
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "./res/platform.bmp");
+		this->img = Surface::Load((char*) "./res/platform.png");
 		b2FixtureDef* def;
 		def = new b2FixtureDef();
 		b2PolygonShape dynamicBox;
 		dynamicBox.SetAsBox(LENGTH / 2, 12.0f);
 		def->shape = &dynamicBox;
-		def->density = 0.7;
+		def->friction = 5;
 		this->body->CreateFixture(def);
 
 		return true;
@@ -101,9 +100,9 @@ public:
 	void Loop() {
 	}
 
-	void Render(SDL_Surface* Display) {
-		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
-				Display->h - this->body->GetTransform().p.y);
+	void Render(SDL_Surface* Display,float PlayerPos) {
+		Surface::Draw(Display, this->img, this->body->GetTransform().p.x-PlayerPos-150,
+				Display->h - this->body->GetTransform().p.y-12);
 	}
 
 	void Cleanup(b2World* world) {

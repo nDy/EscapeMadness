@@ -42,9 +42,9 @@ public:
 		return Current;
 	}
 
-	void Render(SDL_Surface* Display) {
+	void Render(SDL_Surface* Display,float camera=0) {
 
-		Surface::Draw(Display, Background, 0, 0);
+		Surface::Draw(Display, Background, camera, 0);
 
 		this->game->render();
 

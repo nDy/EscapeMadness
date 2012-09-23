@@ -13,7 +13,7 @@ public:
 
 	virtual bool Init() = 0;
 
-	virtual void Render(SDL_Surface* Display) = 0;
+	virtual void Render(SDL_Surface* Display,float camera) = 0;
 
 	virtual int Loop() = 0;
 

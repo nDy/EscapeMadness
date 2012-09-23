@@ -46,7 +46,7 @@ public:
 			return false;
 
 		//Inicializacion de Display
-		if ((Display = SDL_SetVideoMode(640, 480, 32,
+		if ((Display = SDL_SetVideoMode(1024, 768, 32,
 				SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL)
 			return false;
 
@@ -99,7 +99,7 @@ public:
 		return Current;
 	}
 
-	void Render(SDL_Surface* display) {
+	void Render(SDL_Surface* display,float camera=0) {
 		switch (Current) {
 		case Structure::MENU:
 			menu->Render(display);
