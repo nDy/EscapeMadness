@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="cdt.managedbuild.config.gnu.exe.debug.1882983658">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.1882983658" moduleId="org.eclipse.cdt.core.settings" name="Debug">
@@ -40,6 +42,7 @@
 									<listOptionValue builtIn="false" value="SDL"/>
 									<listOptionValue builtIn="false" value="SDL_ttf"/>
 									<listOptionValue builtIn="false" value="Box2D"/>
+									<listOptionValue builtIn="false" value="SDL_image"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.861810807" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -112,12 +115,17 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="EscapeMadness.cdt.managedbuild.target.gnu.exe.1058778642" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/EscapeMadness"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1430451214;cdt.managedbuild.config.gnu.exe.release.1430451214.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1745966363;cdt.managedbuild.tool.gnu.cpp.compiler.input.63132777">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1882983658;cdt.managedbuild.config.gnu.exe.debug.1882983658.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1532372415;cdt.managedbuild.tool.gnu.c.compiler.input.996169591">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1882983658;cdt.managedbuild.config.gnu.exe.debug.1882983658.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1532372415;cdt.managedbuild.tool.gnu.c.compiler.input.996169591">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1430451214;cdt.managedbuild.config.gnu.exe.release.1430451214.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1745966363;cdt.managedbuild.tool.gnu.cpp.compiler.input.63132777">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1430451214;cdt.managedbuild.config.gnu.exe.release.1430451214.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.431294902;cdt.managedbuild.tool.gnu.c.compiler.input.1575450579">
@@ -127,14 +135,4 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/EscapeMadness"/>
-		</configuration>
-		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/EscapeMadness"/>
-		</configuration>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

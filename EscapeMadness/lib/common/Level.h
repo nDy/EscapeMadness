@@ -35,10 +35,17 @@ public:
 
 		player = new BasicCharacter(50, 200, world);
 
-		platform = new Platform*[20];
-		platform[0] = new Platform(300, 100, world);
+		platform = new Platform*[10];
+
+		for (int i = 0; i < 10; i++){
+			platform[i] = new Platform(300 * i, 100, world);
+		}
+
 		player->Init();
-		platform[0]->Init();
+
+		for (int i = 0; i < 10; i++){
+			platform[0]->Init();
+		}
 
 		return true;
 	}
@@ -49,16 +56,23 @@ public:
 	}
 
 	void loop() {
-		world->Step(1.0f / 60.0f, 6, 2);
-		platform[0]->Loop();
-	}
 
+		for (int i = 0; i < 10; i++) {
+			platform[i]->Loop();
+		}
+
+		world->Step(1.0f / 60.0f, 6, 2);
+
+	}
+//04247114492
 	void render(SDL_Surface *Display) {
-		Surface::Draw(Display, Background, 0, 0);
+		Surface::Draw(Display, Background, -player->getBody()->getTransform().x, 0);
 
 		player->Render(Display);
 
-		platform[0]->Render(Display);
+		for (int i = 0; i < 10; i++) {
+			platform[i]->Render(Display);
+		}
 
 	}
 

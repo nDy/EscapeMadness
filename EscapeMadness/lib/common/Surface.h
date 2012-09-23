@@ -12,11 +12,11 @@ public:
 		SDL_Surface* Surf_Temp = NULL;
 		SDL_Surface* Surf_Return = NULL;
 
-		if ((Surf_Temp = SDL_LoadBMP(File)) == NULL) {
+		if ((Surf_Temp = IMG_Load(File)) == NULL) {
 			return NULL;
 		}
 
-		Surf_Return = SDL_DisplayFormat(Surf_Temp);
+		Surf_Return = SDL_DisplayFormatAlpha(Surf_Temp);
 		SDL_FreeSurface(Surf_Temp);
 
 		return Surf_Return;
@@ -48,6 +48,7 @@ public:
 			TTF_CloseFont(font);
 			return Draw(Dest, message, X, Y);
 		}
+
 		return false;
 	}
 
