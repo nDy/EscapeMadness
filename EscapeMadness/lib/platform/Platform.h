@@ -87,7 +87,8 @@ public:
 		b2PolygonShape dynamicBox;
 		dynamicBox.SetAsBox(LENGTH / 2, 12.0f);
 		def->shape = &dynamicBox;
-		def->friction = 5;
+		def->friction = 0;
+		def->filter.groupIndex = 1;
 		this->body->CreateFixture(def);
 
 		return true;

@@ -5,27 +5,25 @@
  *      Author: ndy
  */
 
-#ifndef LEVEL_H_
-#define LEVEL_H_
+#ifndef BOSSLEVEL_H_
+#define BOSSLEVEL_H_
 
 #include <Box2D/Box2D.h>
-#include "../character/Player.h"
-#include "../character/Enemy.h"
+#include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
 
-class Level {
+class BossLevel {
 private:
 	b2World* world;
-	Player * player;
-	Enemy ** enemy;
+	BasicCharacter * player;
 	SDL_Surface* Background;
 	Platform** platform;
 	float camera;
 
 public:
 
-	Level() {
-		this->enemy = new Enemy*[1];
+	BossLevel() {
+
 	}
 
 	bool Init() {
@@ -39,9 +37,7 @@ public:
 
 		world = new b2World(b2Vec2(0, -9.8));
 
-		player = new Player(200, 205, world);
-
-		enemy[0] = new Enemy(500, 205, world, 2);
+		player = new BasicCharacter(250, 300, world);
 
 		platform = new Platform*[10];
 
@@ -51,13 +47,16 @@ public:
 
 		player->Init();
 
-		enemy[0]->Init();
-
 		for (int i = 0; i < 10; i++) {
 			platform[i]->Init();
 		}
 
 		return true;
+	}
+
+	int wasHit() {
+		//return player contacts
+		return 0;
 	}
 
 	void Loop() {
@@ -66,28 +65,23 @@ public:
 			platform[i]->Loop();
 		}
 
-		player->Loop();
+		world->Step(1.0f / 60.0f, 6, 2);
 
-		if (enemy[0] != NULL)
-			enemy[0]->Loop();
+		//fix camera
 
-		world->Step(1.0f / 60.0f, 24, 8);
-
-		if (camera + 1024 - player->getBody()->GetTransform().p.x < 800)
-			camera = player->getBody()->GetTransform().p.x - 1024 + 800;
+		if (player->getBody()->GetTransform().p.x - camera < 200)
+			camera = player->getBody()->GetTransform().p.x - 200;
+		if (camera + 768 - player->getBody()->GetTransform().p.x < 200)
+			camera = player->getBody()->GetTransform().p.x - 768 + 200;
 
 	}
 
 	void Render(SDL_Surface *Display) {
 
-		Surface::Draw(Display, Background, -camera - Background->w, 0);
 		Surface::Draw(Display, Background, -camera, 0);
 		Surface::Draw(Display, Background, Background->w - camera, 0);
 
 		player->Render(Display, camera);
-
-		if (enemy[0] != NULL)
-			enemy[0]->Render(Display, camera);
 
 		for (int i = 0; i < 10; i++) {
 			platform[i]->Render(Display, camera);
@@ -95,7 +89,7 @@ public:
 
 	}
 
-	Player * getPlayer() {
+	BasicCharacter * getPlayer() {
 		return this->player;
 	}
 
@@ -107,8 +101,6 @@ public:
 		}
 
 		this->player->Cleanup();
-		if (enemy[0] != NULL)
-			this->enemy[0]->Cleanup();
 
 	}
 
@@ -120,4 +112,4 @@ public:
 
 };
 
-#endif /* LEVEL_H_ */
+#endif /* BOSSLEVEL_H_ */

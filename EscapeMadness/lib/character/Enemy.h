@@ -1,24 +1,30 @@
-#ifndef _BASICCHARACTER_H_
-#define _BASICCHARACTER_H_
+/*
+ * Enemy.h
+ *
+ *  Created on: Sep 23, 2012
+ *      Author: ndy
+ */
+
+#ifndef ENEMY_H_
+#define ENEMY_H_
 
 #include <SDL/SDL.h>
 #include <Box2D/Box2D.h>
-#include <iostream>
 #include "../common/Structure.h"
 #include "../common/Surface.h"
-#include <cmath>
+#include <iostream>
 
-class BasicCharacter: public Structure {
-
+class Enemy {
+private:
 	b2Body* body;
 	b2Body** bullets;
 	SDL_Surface* img;
 	SDL_Surface* bullet;
 	b2World* world;
+	int life;
 
 public:
-
-	BasicCharacter(float x, float y, b2World*& world) {
+	Enemy(float x, float y, b2World*& world, int lifes) {
 		b2BodyDef* def;
 		def = new b2BodyDef();
 		def->type = b2_dynamicBody;
@@ -26,6 +32,28 @@ public:
 		body = world->CreateBody(def);
 		bullets = new b2Body*[50];
 		this->world = world;
+		this->life = lifes;
+	}
+
+	bool wasHit() {
+
+		if  (body == NULL){
+			std::cout << "body es nulo" << std::endl;
+		}
+
+		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
+
+		{
+
+			b2Contact* c = ce->contact;
+
+			if (c->GetFixtureB()->GetBody()->IsBullet()) {
+				world->DestroyBody(c->GetFixtureB()->GetBody());
+
+				return true;
+			}
+		}
+		return false;
 	}
 
 	bool Init() {
@@ -36,15 +64,15 @@ public:
 		b2PolygonShape dynamicBox;
 		dynamicBox.SetAsBox(50.0f, 100.0f);
 		def->shape = &dynamicBox;
-		def->filter.categoryBits = 0x0002;
-		def->filter.maskBits = 0x0001;
-		//def->density = 1.0;
+		def->filter.groupIndex = 3;
 		this->body->CreateFixture(def);
 
 		return true;
 	}
 
 	void Render(SDL_Surface* Display, float camera) {
+		if (this->life == 0)
+			return;
 		Surface::Draw(Display, this->img,
 				this->body->GetTransform().p.x - camera - 50,
 				Display->h - this->body->GetTransform().p.y - 89);
@@ -56,13 +84,27 @@ public:
 						Display->h - this->bullets[i]->GetTransform().p.y - 89);
 		}
 	}
-	void Cleanup() const {
+
+	void Cleanup() {
 		SDL_FreeSurface(this->img);
+		world->DestroyBody(this->body);
+		this->body = NULL;
 	}
 
 	int Loop() {
 
-		if (body->GetLinearVelocity().x < 50)
+		if (this->wasHit()) {
+			if (life < 1) {
+				this->Cleanup();
+				delete this;
+			}
+			life--;
+		}
+
+		if (this->life == 0)
+			return 0;
+
+		if (body->GetLinearVelocity().x < 40)
 			body->ApplyLinearImpulse(b2Vec2(10, 0), b2Vec2_zero);
 
 		for (int i = 0; i < 50; i++) {
@@ -87,8 +129,6 @@ public:
 		body->ApplyLinearImpulse(b2Vec2(0, 70), b2Vec2(0, 0));
 		// jumping++;
 	}
-
-	virtual bool wasHit() =0;
 
 	void moveRight() {
 		//body->ApplyLinearImpulse(b2Vec2(5, 0), b2Vec2(0, 0));
@@ -124,8 +164,8 @@ public:
 		b2FixtureDef * fixture;
 		fixture = new b2FixtureDef();
 		fixture->shape = &bulletShape;
-		fixture->filter.categoryBits = 0x0002;
-		fixture->filter.maskBits = 0x0001;
+		fixture->filter.groupIndex = 3;
+		fixture->filter.categoryBits = 1;
 		this->bullets[i]->CreateFixture(fixture);
 		this->bullets[i]->SetLinearVelocity(
 				b2Vec2(99 * this->body->GetLinearVelocity().x, 0));
@@ -138,6 +178,9 @@ public:
 	void resetJump() {
 
 	}
+
+	virtual ~Enemy() {
+	}
 };
 
-#endif
+#endif /* ENEMY_H_ */
