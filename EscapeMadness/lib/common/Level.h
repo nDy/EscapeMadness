@@ -36,7 +36,7 @@ public:
 		player = new BasicCharacter(50, 200, world);
 
 		platform = new Platform*[20];
-		platform[0] = new Platform(0, 100, world);
+		platform[0] = new Platform(300, 100, world);
 		player->Init();
 		platform[0]->Init();
 
@@ -49,7 +49,7 @@ public:
 	}
 
 	void loop() {
-		world->Step(.5, 6, 2);
+		world->Step(1.0f / 60.0f, 6, 2);
 		platform[0]->Loop();
 	}
 

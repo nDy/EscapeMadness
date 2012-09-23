@@ -86,9 +86,9 @@ public:
 		b2FixtureDef* def;
 		def = new b2FixtureDef();
 		b2PolygonShape dynamicBox;
-		dynamicBox.SetAsBox(100.0f, 12.0f);
+		dynamicBox.SetAsBox(300.0f, 12.0f);
 		def->shape = &dynamicBox;
-		def->density = 1.0;
+		def->density = 0.7;
 		this->body->CreateFixture(def);
 
 		return true;

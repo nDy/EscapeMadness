@@ -38,8 +38,6 @@ public:
 	void Render(SDL_Surface* Display) {
 		Surface::Draw(Display, this->img, this->body->GetTransform().p.x,
 				Display->h - this->body->GetTransform().p.y);
-		std::cout << this->body->GetTransform().p.x << " "
-						<< Display->h - this->body->GetTransform().p.y << std::endl;
 	}
 
 	void Cleanup() const {
@@ -60,7 +58,7 @@ public:
 
 	void jump() {
 		// if (jumping <= 2) {
-		body->ApplyLinearImpulse(b2Vec2(0, 50), b2Vec2(0, 0));
+		body->ApplyLinearImpulse(b2Vec2(0, 5), b2Vec2(0, 0));
 		// jumping++;
 	}
 
@@ -70,11 +68,11 @@ public:
 	}
 
 	void moveRight() {
-		body->ApplyForce(b2Vec2(5, 0), b2Vec2(0, 0));
+		body->ApplyForceToCenter(b2Vec2(.2, 0));
 	}
 
 	void moveLeft() {
-		body->ApplyForce(b2Vec2(-5, 0), b2Vec2(0, 0));
+		body->ApplyForceToCenter(b2Vec2(-.2, 0));
 	}
 
 	float getMass() {
@@ -82,7 +80,7 @@ public:
 	}
 
 	void resetJump() {
-		//jumping = 0;
+
 	}
 };
 

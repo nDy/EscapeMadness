@@ -17,11 +17,15 @@ private:
 	int Current;
 	int Lifes;
 	float Life;
+	bool MoveRight;
+	bool MoveLeft;
 
 public:
 	InGame(int id) {
 		Current = id;
 
+		MoveRight = false;
+		MoveLeft = false;
 	}
 
 	bool Init() {
@@ -37,10 +41,26 @@ public:
 			this->Cleanup();
 		}
 
-		lvl->loop();
+		if (MoveRight)
+			movePlayer(0);
 
+		if (MoveLeft)
+			movePlayer(1);
+
+		lvl->loop();
 		return Current;
 
+	}
+
+	void movePlayer(int LR){
+		switch(LR){
+		case 0:
+			this->lvl->getPlayer()->moveRight();
+			break;
+		case 1:
+			this->lvl->getPlayer()->moveLeft();
+			break;
+		}
 	}
 
 	void Render(SDL_Surface* Display) {
@@ -64,18 +84,21 @@ public:
 	}
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
-		if (sym == SDLK_RIGHT)
-			this->lvl->getPlayer()->moveRight();
-		if (sym == SDLK_LEFT)
-			this->lvl->getPlayer()->moveLeft();
-		if (sym == SDLK_SPACE) {
+
+		if (sym == SDLK_SPACE)
 			this->lvl->getPlayer()->jump();
-			std::cout << "salta hdp" << std::endl;
-		}
+
+		if (sym == SDLK_RIGHT)
+			this->MoveRight = true;
+
+		if (sym == SDLK_LEFT)
+			this->MoveLeft = true;
 
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
+		this->MoveRight = false;
+		this->MoveLeft = false;
 	}
 
 	void OnMouseFocus() {
