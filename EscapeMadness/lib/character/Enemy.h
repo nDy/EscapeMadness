@@ -37,8 +37,9 @@ public:
 
 	bool wasHit() {
 
-		if  (body == NULL){
-			std::cout << "body es nulo" << std::endl;
+		if  (life == 0){
+			std::cout << "muerto" << std::endl;
+			return false;
 		}
 
 		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
@@ -49,7 +50,7 @@ public:
 
 			if (c->GetFixtureB()->GetBody()->IsBullet()) {
 				world->DestroyBody(c->GetFixtureB()->GetBody());
-
+				std::cout << "dfsdfkjdskjf" << std::endl;
 				return true;
 			}
 		}
