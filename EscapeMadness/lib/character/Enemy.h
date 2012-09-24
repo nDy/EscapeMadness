@@ -20,6 +20,7 @@ private:
 	b2Body** bullets;
 	SDL_Surface* img;
 	SDL_Surface* bullet;
+	b2Body* hittingBullet;
 	b2World* world;
 	int life;
 
@@ -37,10 +38,10 @@ public:
 
 	bool wasHit() {
 
-		if  (life == 0){
-			std::cout << "muerto" << std::endl;
+
+
+		if (life < 1)
 			return false;
-		}
 
 		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
 
@@ -49,8 +50,8 @@ public:
 			b2Contact* c = ce->contact;
 
 			if (c->GetFixtureB()->GetBody()->IsBullet()) {
-				world->DestroyBody(c->GetFixtureB()->GetBody());
-				std::cout << "dfsdfkjdskjf" << std::endl;
+				c->GetFixtureB()->GetBody()->SetActive(false);
+					world->DestroyBody(c->GetFixtureB()->GetBody());
 				return true;
 			}
 		}
@@ -88,25 +89,24 @@ public:
 
 	void Cleanup() {
 		SDL_FreeSurface(this->img);
-		world->DestroyBody(this->body);
-		this->body = NULL;
+		world->DestroyBody(body);
+		body = NULL;
+		delete this;
 	}
 
 	int Loop() {
 
 		if (this->wasHit()) {
-			if (life < 1) {
-				this->Cleanup();
-				delete this;
-			}
 			life--;
 		}
 
-		if (this->life == 0)
-			return 0;
+
+
+		if (this->life <= 0)
+			body->ApplyLinearImpulse(b2Vec2(0,65000), b2Vec2_zero);
 
 		if (body->GetLinearVelocity().x < 40)
-			body->ApplyLinearImpulse(b2Vec2(10, 0), b2Vec2_zero);
+			body->ApplyLinearImpulse(b2Vec2(0, 0), b2Vec2_zero);
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
