@@ -20,6 +20,7 @@ private:
 	SDL_Surface* img;
 	SDL_Surface* bullet;
 	b2World* world;
+	int life;
 public:
 	Player(float x, float y, b2World*& world)
 	{
@@ -32,7 +33,26 @@ public:
 		this->world = world;
 	}
 
+	int lifes(){
+		return this->life;
+	}
+
 	bool wasHit(){
+		if (life < 1)
+			return false;
+
+		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
+
+		{
+
+			b2Contact* c = ce->contact;
+
+			if (c->GetFixtureB()->GetBody()->IsBullet()) {
+				c->GetFixtureB()->GetBody()->SetActive(false);
+					world->DestroyBody(c->GetFixtureB()->GetBody());
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -46,7 +66,7 @@ public:
 			def->shape = &dynamicBox;
 			def->filter.groupIndex =2;
 			this->body->CreateFixture(def);
-
+			life = 50;
 			return true;
 		}
 
@@ -68,6 +88,10 @@ public:
 		}
 
 		int Loop() {
+
+			if(wasHit())
+				life--;
+
 
 			if (body->GetLinearVelocity().x < 50)
 				body->ApplyLinearImpulse(b2Vec2(10, 0), b2Vec2_zero);
@@ -109,7 +133,7 @@ public:
 			body->SetLinearVelocity(b2Vec2_zero);
 		}
 
-		void Shoot(int x, int y) {
+		void Shoot() {
 			int i = 0;
 			while (!(this->bullets[i] == NULL)) {
 				if (i < 50)

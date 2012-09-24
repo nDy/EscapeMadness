@@ -13,7 +13,7 @@
 class InGame: public Event, public Structure {
 private:
 	Level *lvl;
-
+	SDL_Surface* img;
 	int Current;
 	int Lifes;
 	float Life;
@@ -33,7 +33,7 @@ public:
 
 		lvl = new Level();
 		lvl->Init();
-
+		this->img = Surface::Load((char*) "./res/heart.png");
 		return true;
 	}
 
@@ -69,19 +69,30 @@ public:
 
 		lvl->Render(Display);
 
-		if (lvl->finished()) {
+/*		if (lvl->finished()) {
 			Surface::DrawText("Nivel terminado", Display, 20, 20, 255, 255, 255,
 					20);
 			Surface::DrawText("Presiona Escape para continuar", Display, 20, 50,
 					255, 255, 255, 20);
 		}
-
+*/
 		//Draw HUD
+
+		for (int i=0;i<this->lvl->getPlayer()->lifes()/5;i++){
+			Surface::Draw(Display, this->img, (i+1)*25,25);
+		}
+
+		if(lvl->getPlayer()->lifes()<=0){
+			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255,
+								75);
+		}
+
 
 	}
 
 	void Cleanup() const {
 		lvl->Cleanup();
+		SDL_FreeSurface(this->img);
 	}
 
 	//Events
@@ -124,7 +135,7 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-		this->lvl->getPlayer()->Shoot(mX,mY);
+		this->lvl->getPlayer()->Shoot();
 	}
 
 	void OnLButtonUp(int mX, int mY) {

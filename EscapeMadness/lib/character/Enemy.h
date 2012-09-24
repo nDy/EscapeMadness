@@ -103,14 +103,14 @@ public:
 
 
 		if (this->life <= 0)
-			body->ApplyLinearImpulse(b2Vec2(0,65000), b2Vec2_zero);
+			body->ApplyLinearImpulse(b2Vec2(0, 65000 * 10), b2Vec2_zero);
 
 		if (body->GetLinearVelocity().x < 40)
 			body->ApplyLinearImpulse(b2Vec2(0, 0), b2Vec2_zero);
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
-				this->bullets[i]->ApplyLinearImpulse(b2Vec2(65000, 0),
+				this->bullets[i]->ApplyLinearImpulse(b2Vec2(-65000, 0),
 						b2Vec2_zero);
 		}
 
@@ -145,7 +145,7 @@ public:
 		body->SetLinearVelocity(b2Vec2_zero);
 	}
 
-	void Shoot(int x, int y) {
+	void Shoot() {
 		int i = 0;
 		while (!(this->bullets[i] == NULL)) {
 			if (i < 50)
@@ -157,7 +157,7 @@ public:
 		def = new b2BodyDef();
 		def->type = b2_dynamicBody;
 		def->bullet = true;
-		def->position.Set(this->body->GetTransform().p.x + 55,
+		def->position.Set(this->body->GetTransform().p.x - 55,
 				this->body->GetTransform().p.y);
 		b2CircleShape bulletShape;
 		bulletShape.m_radius = 1;
@@ -165,8 +165,9 @@ public:
 		b2FixtureDef * fixture;
 		fixture = new b2FixtureDef();
 		fixture->shape = &bulletShape;
-		fixture->filter.groupIndex = 3;
+		fixture->filter.groupIndex =2;
 		fixture->filter.categoryBits = 1;
+		fixture->userData = this->bullet;
 		this->bullets[i]->CreateFixture(fixture);
 		this->bullets[i]->SetLinearVelocity(
 				b2Vec2(99 * this->body->GetLinearVelocity().x, 0));
