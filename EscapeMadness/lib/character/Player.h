@@ -39,21 +39,6 @@ public:
 	bool wasHit() {
 		if (life < 1)
 			return false;
-
-		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
-
-		{
-
-			b2Contact* c = ce->contact;
-
-			if (c->GetFixtureB()->GetBody()->IsBullet()) {
-				return true;
-			}
-			if (c->GetFixtureB()->GetFilterData().groupIndex == 3) {
-				life = life - 4;
-			}
-		}
-
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
 
@@ -61,10 +46,26 @@ public:
 						ce = ce->next)
 
 						{
-					this->bullets[i]->SetActive(false);
-					this->world->DestroyBody(this->bullets[i]);
-					this->bullets[i] = NULL;
+					{
+						this->bullets[i]->SetActive(false);
+						this->world->DestroyBody(this->bullets[i]);
+						this->bullets[i] = NULL;
+					}
 				}
+		}
+		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
+
+		{
+			b2Contact* c = ce->contact;
+
+			if (c->GetFixtureB()->GetBody()->IsBullet()) {
+				life--;
+				return true;
+			} else if (c->GetFixtureB()->GetFilterData().groupIndex == 3
+					&& c->GetFixtureB()->GetFilterData().categoryBits != 1) {
+				life = life - 4;
+				return true;
+			}
 		}
 
 		return false;
@@ -79,8 +80,9 @@ public:
 		dynamicBox.SetAsBox(50.0f, 100.0f);
 		def->shape = &dynamicBox;
 		def->filter.groupIndex = 2;
+		def->filter.categoryBits = 0x0002;
 		this->body->CreateFixture(def);
-		life = 50;
+		life = 20;
 		return true;
 	}
 
@@ -105,9 +107,6 @@ public:
 
 		if (wasHit())
 			life--;
-
-		if (body->GetLinearVelocity().x < 50)
-			body->ApplyLinearImpulse(b2Vec2(10, 0), b2Vec2_zero);
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
@@ -166,8 +165,7 @@ public:
 		b2FixtureDef * fixture;
 		fixture = new b2FixtureDef();
 		fixture->shape = &bulletShape;
-		fixture->filter.groupIndex = 2;
-		fixture->filter.categoryBits = 1;
+		fixture->filter.maskBits = 0x0004;
 		fixture->userData = this->bullet;
 		this->bullets[i]->CreateFixture(fixture);
 		this->bullets[i]->SetLinearVelocity(

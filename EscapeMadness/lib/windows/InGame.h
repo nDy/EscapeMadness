@@ -78,7 +78,7 @@ public:
 */
 		//Draw HUD
 
-		for (int i=0;i<this->lvl->getPlayer()->lifes()/5;i++){
+		for (int i=0;i<this->lvl->getPlayer()->lifes();i++){
 			Surface::Draw(Display, this->img, (i+1)*25,25);
 		}
 
@@ -113,7 +113,6 @@ public:
 
 		if (sym == SDLK_LEFT)
 			this->MoveLeft = true;
-		//this->lvl->getPlayer()->moveLeft();
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {

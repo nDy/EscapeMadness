@@ -85,28 +85,15 @@ public:
 			platform[i]->Loop();
 		}
 
-		int distance;
+		player->Loop();
+
 		for (int i = 0; i < 15; i++) {
 
 			if (this->enemy[i] != NULL) {
-				if (this->enemy[i]->Loop() == -1) {
+				if (this->enemy[i]->Loop() == -1)
 					this->enemy[i] = NULL;
-				} else {
-					distance = this->enemy[i]->getBody()->GetTransform().p.x
-							- player->getBody()->GetTransform().p.x;
-
-					if (distance <= 400 && distance > 0) {
-						if (shoot % 60 == 0) {
-							this->enemy[i]->Shoot();
-						}
-						if (shoot == 60)
-							shoot = 0;
-					}
-				}
 			}
 		}
-
-		player->Loop();
 
 		if (player->lifes() > 0)
 			world->Step(1.0f / 60.0f, 24, 8);
