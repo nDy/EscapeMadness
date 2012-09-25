@@ -85,29 +85,31 @@ public:
 			platform[i]->Loop();
 		}
 
-		player->Loop();
-
 		int distance;
 		for (int i = 0; i < 15; i++) {
-			if (enemy[i] != NULL) {
-				this->enemy[i]->Loop();
 
-				distance = this->enemy[i]->getBody()->GetTransform().p.x
-						- player->getBody()->GetTransform().p.x;
+			if (this->enemy[i] != NULL) {
+				if (this->enemy[i]->Loop() == -1) {
+					this->enemy[i] = NULL;
+				} else {
+					distance = this->enemy[i]->getBody()->GetTransform().p.x
+							- player->getBody()->GetTransform().p.x;
 
-				if (distance <= 400 && distance > 0) {
-					if (shoot % 60==0) {
-						this->enemy[i]->Shoot();
+					if (distance <= 400 && distance > 0) {
+						if (shoot % 60 == 0) {
+							this->enemy[i]->Shoot();
+						}
+						if (shoot == 60)
+							shoot = 0;
 					}
-					if (shoot == 60)
-						shoot = 0;
 				}
 			}
-
 		}
 
+		player->Loop();
+
 		if (player->lifes() > 0)
-		world->Step(1.0f / 60.0f, 24, 8);
+			world->Step(1.0f / 60.0f, 24, 8);
 
 		if (camera + 1024 - player->getBody()->GetTransform().p.x < 800)
 			camera = player->getBody()->GetTransform().p.x - 1024 + 800;
@@ -137,7 +139,6 @@ public:
 			platform[i]->Render(Display, camera);
 		}
 
-
 	}
 
 	Player * getPlayer() {
@@ -158,12 +159,12 @@ public:
 		}
 	}
 
-/*	bool finished() {
-		if (player->getBody()->GetTransform().p.x >= 10000)
-			return true;
-		return false;
-	}
-*/
+	/*	bool finished() {
+	 if (player->getBody()->GetTransform().p.x >= 10000)
+	 return true;
+	 return false;
+	 }
+	 */
 };
 
 #endif /* LEVEL_H_ */

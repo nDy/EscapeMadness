@@ -38,23 +38,33 @@ public:
 
 	bool wasHit() {
 
-
-
-		if (life < 1)
-			return false;
-
 		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
 
 		{
-
 			b2Contact* c = ce->contact;
 
 			if (c->GetFixtureB()->GetBody()->IsBullet()) {
-				c->GetFixtureB()->GetBody()->SetActive(false);
-					world->DestroyBody(c->GetFixtureB()->GetBody());
+				life--;
 				return true;
 			}
+			if(c->GetFixtureB()->GetFilterData().groupIndex == 2){
+				life = 0;
+			}
 		}
+
+		for (int i = 0; i < 50; i++) {
+			if (this->bullets[i] != NULL)
+
+				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
+						ce = ce->next)
+
+						{
+					this->bullets[i]->SetActive(false);
+					this->world->DestroyBody(this->bullets[i]);
+					this->bullets[i] = NULL;
+				}
+		}
+
 		return false;
 	}
 
@@ -89,29 +99,36 @@ public:
 
 	void Cleanup() {
 		SDL_FreeSurface(this->img);
-		world->DestroyBody(body);
-		body = NULL;
+		SDL_FreeSurface(this->bullet);
+		this->body->SetActive(false);
+		this->world->DestroyBody(this->body);
+		this->body = NULL;
+
+		for (int i = 0; i < 50; i++) {
+			if (this->bullets[i] != NULL) {
+				this->bullets[i]->SetActive(false);
+				this->world->DestroyBody(this->bullets[i]);
+				this->bullets[i] = NULL;
+			}
+		}
+
 		delete this;
 	}
 
 	int Loop() {
 
-		if (this->wasHit()) {
-			life--;
-		}
+		this->wasHit();
 
+		if (this->life == 0) {
+			this->Cleanup();
+			return -1;
+		} else {
 
-
-		if (this->life <= 0)
-			body->ApplyLinearImpulse(b2Vec2(0, 65000 * 10), b2Vec2_zero);
-
-		if (body->GetLinearVelocity().x < 40)
-			body->ApplyLinearImpulse(b2Vec2(0, 0), b2Vec2_zero);
-
-		for (int i = 0; i < 50; i++) {
-			if (this->bullets[i] != NULL)
-				this->bullets[i]->ApplyLinearImpulse(b2Vec2(-65000, 0),
-						b2Vec2_zero);
+			for (int i = 0; i < 50; i++) {
+				if (this->bullets[i] != NULL)
+					this->bullets[i]->ApplyLinearImpulse(b2Vec2(-65000, 0),
+							b2Vec2_zero);
+			}
 		}
 
 		return 0;
@@ -165,7 +182,7 @@ public:
 		b2FixtureDef * fixture;
 		fixture = new b2FixtureDef();
 		fixture->shape = &bulletShape;
-		fixture->filter.groupIndex =2;
+		fixture->filter.groupIndex = 2;
 		fixture->filter.categoryBits = 1;
 		fixture->userData = this->bullet;
 		this->bullets[i]->CreateFixture(fixture);
