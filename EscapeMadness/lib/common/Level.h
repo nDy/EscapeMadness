@@ -95,6 +95,12 @@ public:
 			}
 		}
 
+		player->bulletLoop();
+
+		for (int i = 0; i < 15; i++) {
+			this->enemy[i]->bulletLoop();
+		}
+
 		if (player->lifes() > 0)
 			world->Step(1.0f / 60.0f, 24, 8);
 
@@ -102,7 +108,7 @@ public:
 			camera = player->getBody()->GetTransform().p.x - 1024 + 400;
 
 		if (player->getBody()->GetTransform().p.x - camera < 400)
-					camera = player->getBody()->GetTransform().p.x - 400;
+			camera = player->getBody()->GetTransform().p.x - 400;
 
 		shoot++;
 
