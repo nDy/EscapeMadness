@@ -23,6 +23,7 @@ private:
 	SDL_Surface* bullet;
 	b2World* world;
 	int life;
+	int jumping;
 
 public:
 
@@ -59,20 +60,21 @@ public:
 		return -1;
 	}
 
-	void bulletLoop(){
+	void bulletLoop() {
 
 		for (int i = 0; i < 50; i++) {
-				if (this->bullets[i] != NULL)
+			if (this->bullets[i] != NULL)
 
-					for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce; ce = ce->next) {
-						{
-							this->bullets[i]->SetActive(false);
-							this->world->DestroyBody(this->bullets[i]);
-							this->bullets[i] = NULL;
-						}
-
+				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
+						ce = ce->next) {
+					{
+						this->bullets[i]->SetActive(false);
+						this->world->DestroyBody(this->bullets[i]);
+						this->bullets[i] = NULL;
 					}
-			}
+
+				}
+		}
 
 	}
 
@@ -88,6 +90,7 @@ public:
 		def->filter.categoryBits = 0x0002;
 		this->body->CreateFixture(def);
 		life = 20;
+		this->jumping = 0;
 		return true;
 	}
 
@@ -114,9 +117,10 @@ public:
 
 	void Loop() {
 
-		switch (wasHit()){
+		switch (wasHit()) {
 
-		case 0: //Reset jump
+		case 0:
+			this->resetJump();
 			break;
 
 		case 1:
@@ -140,9 +144,10 @@ public:
 	}
 
 	void jump() {
-		// if (jumping <= 2) {
-		body->ApplyLinearImpulse(b2Vec2(0, 70), b2Vec2(0, 0));
-		// jumping++;
+		if (jumping < 1) {
+			body->ApplyLinearImpulse(b2Vec2(0, 70), b2Vec2(0, 0));
+			jumping++;
+		}
 	}
 
 	void moveRight() {
@@ -192,11 +197,12 @@ public:
 	}
 
 	void resetJump() {
-
+		jumping = 0;
 	}
 
 	~Player() {
 	}
-};
+}
+;
 
 #endif /* PLAYER_H_ */
