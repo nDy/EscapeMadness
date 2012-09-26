@@ -98,8 +98,11 @@ public:
 		if (player->lifes() > 0)
 			world->Step(1.0f / 60.0f, 24, 8);
 
-		if (camera + 1024 - player->getBody()->GetTransform().p.x < 800)
-			camera = player->getBody()->GetTransform().p.x - 1024 + 800;
+		if (camera + 1024 - player->getBody()->GetTransform().p.x < 400)
+			camera = player->getBody()->GetTransform().p.x - 1024 + 400;
+
+		if (player->getBody()->GetTransform().p.x - camera < 400)
+					camera = player->getBody()->GetTransform().p.x - 400;
 
 		shoot++;
 
