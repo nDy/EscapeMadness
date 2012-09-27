@@ -8,6 +8,7 @@
 #include <SDL/SDL_mixer.h>
 
 class Menu: public Event {
+
 private:
 
 	SDL_Surface* Background;
@@ -18,6 +19,7 @@ private:
 
 
 public:
+
 	Menu(int id) {
 		Current = id;
 	}
@@ -38,7 +40,7 @@ public:
 			return false;
 		}
 
-		music = Mix_LoadMUS( "./res/OST/09 The Nurse Who Loved Me.wav");
+		music = Mix_LoadMUS( "./res/OST/Bonehead - Naked City.wav");
 		this->title = new Button((char*) "Escape Madness", 35, 140, Background, 150);
 		this->game = new Button((char*) "PRESIONA AQUI PARA COMENZAR", 300, 340, Background, 40);
 		Mix_PlayMusic( music, -1 );
@@ -46,6 +48,11 @@ public:
 	}
 
 	int Loop() {
+		if( Mix_PlayingMusic() == 0 ){
+			music = Mix_LoadMUS( "./res/OST/01 - Ocean of Molasses.wav");
+			Mix_PlayMusic( music, -1 );
+		}
+
 		if (Current != Structure::MENU) {
 			this->Cleanup();
 		}

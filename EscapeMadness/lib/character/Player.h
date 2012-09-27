@@ -80,7 +80,7 @@ public:
 
 	bool Init() {
 		this->img = Surface::Load((char*) "./res/Player/Standing/Stand1.png");
-		this->bullet = Surface::Load((char*) "./res/bullet.png");
+		this->bullet = Surface::Load((char*) "./res/Fireball.png");
 		b2FixtureDef* def;
 		def = new b2FixtureDef();
 		b2PolygonShape dynamicBox;
