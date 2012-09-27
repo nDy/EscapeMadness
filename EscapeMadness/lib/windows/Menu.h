@@ -5,11 +5,13 @@
 #include "Event.h"
 #include "../common/Structure.h"
 #include "../common/Button.h"
+#include <SDL/SDL_mixer.h>
 
 class Menu: public Event {
 private:
 
 	SDL_Surface* Background;
+	Mix_Music *music;
 	Button* game;
 	Button* title;
 	int Current;
@@ -24,6 +26,10 @@ public:
 
 		Background = Surface::Load("./res/Fondos/back.jpg");
 
+	    if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 ){
+		    return false;
+	    }
+
 		if (Background == NULL) {
 			return false;
 		}
@@ -32,9 +38,10 @@ public:
 			return false;
 		}
 
+		music = Mix_LoadMUS( "./res/OST/09 The Nurse Who Loved Me.wav");
 		this->title = new Button((char*) "Escape Madness", 35, 140, Background, 150);
 		this->game = new Button((char*) "PRESIONA AQUI PARA COMENZAR", 300, 340, Background, 40);
-
+		Mix_PlayMusic( music, -1 );
 		return true;
 	}
 
@@ -88,6 +95,7 @@ public:
 
 	void OnLButtonDown(int mX, int mY) {
 		if (game->isClicked(mX, mY)) {
+			Mix_HaltMusic();
 			Current = Structure::INGAME;
 		}
 	}
