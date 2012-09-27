@@ -54,13 +54,13 @@ public:
 			return false;
 
 		//Inicializacion de ventanas
+		if (!intro->Init())
+			return false;
 		if (!menu->Init())
 			return false;
 		if (!help->Init())
 			return false;
 		if (!ingame->Init())
-			return false;
-		if (!intro->Init())
 			return false;
 
 		return true;
@@ -136,10 +136,10 @@ public:
 
 	void Cleanup() const {
 		SDL_Quit();
+		intro->Cleanup();
 		menu->Cleanup();
 		help->Cleanup();
 		ingame->Cleanup();
-		intro->Cleanup();
 	}
 
 	int Execute() {

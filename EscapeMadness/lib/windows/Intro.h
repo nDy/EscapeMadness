@@ -14,28 +14,24 @@ private:
 	SDL_Surface* Background;
 	SDL_Surface* logoBox2d;
 	SDL_Surface* logoSDL;
-	Button* game;
-	Button* title;
 	int Current;
+	int time;
 
 public:
 
 	Intro(int id) {
 		Current = id;
+		time = 0;
 	}
 
 	bool Init() {
 
-		Background = Surface::Load("./res/Fondos/back.jpg");
-		logoBox2d = Surface::Load("./res/Logos/box2d.jpg");
-		logoSDL = Surface::Load("./res/Logos/sdl.jpg");
+		Background = Surface::Load("./res/Fondos/white.jpg");
+		logoBox2d = Surface::Load("./res/Logos/box2d.png");
+		logoSDL = Surface::Load("./res/Logos/sdl.png");
 
 
 		if (Background == NULL) {
-			return false;
-		}
-
-		if (TTF_Init() == -1) {
 			return false;
 		}
 
@@ -44,9 +40,14 @@ public:
 
 	int Loop() {
 
-		if (Current != Structure::MENU) {
+		if (Current != Structure::INTRO) {
 			this->Cleanup();
 		}
+
+		if (time > 10){
+			Current = Structure::MENU;
+		}
+
 		return Current;
 	}
 
@@ -55,11 +56,16 @@ public:
 	void Render(SDL_Surface* Display,float camera=0) {
 
 		Surface::Draw(Display, Background, camera, 0);
+
+		if (time < 5)
+		Surface::Draw(Display, logoSDL, 300, 250);
+
+		if (time > 5)
+		Surface::Draw(Display, logoBox2d, 370, 300);
+
 		SDL_Delay(1000);
-		Surface::Draw(Display, logoSDL, camera, 0);
-		SDL_Delay(1000);
-		Surface::Draw(Display, logoBox2d, camera, 0);
-		SDL_Delay(1000);
+
+		time++;
 
 	}
 

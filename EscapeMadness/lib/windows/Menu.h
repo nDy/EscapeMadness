@@ -16,11 +16,13 @@ private:
 	Button* game;
 	Button* title;
 	int Current;
+	bool playFirst;
 
 public:
 
 	Menu(int id) {
 		Current = id;
+		playFirst = false;
 	}
 
 	bool Init() {
@@ -44,20 +46,29 @@ public:
 		this->title = new Button((char*) "Escape Madness", 35, 140, Background, 150);
 		this->game = new Button((char*) "PRESIONA AQUI PARA COMENZAR", 300, 340, Background, 40);
 
-		Mix_PlayMusic( music, 0 );
+
 		return true;
 	}
 
 	int Loop() {
+
+
+		if (Current != Structure::MENU) {
+			this->Cleanup();
+		}
+
+		if( playFirst == false) {
+			Mix_PlayMusic( music, 0 );
+			playFirst = true;
+		}
+
 
 		if( Mix_PlayingMusic() == 0 ) {
 			music = Mix_LoadMUS( "./res/OST/01 - Ocean of Molasses.wav");
 			Mix_PlayMusic( music, 0);
 		}
 
-		if (Current != Structure::MENU) {
-			this->Cleanup();
-		}
+
 		return Current;
 	}
 
@@ -75,8 +86,9 @@ public:
 
 	void Cleanup() {
 		SDL_FreeSurface(Background);
+		delete game;
+		delete title;
 		Mix_FreeMusic( music );
-		Mix_CloseAudio();
 	}
 
 	//Events
@@ -109,6 +121,7 @@ public:
 	void OnLButtonDown(int mX, int mY) {
 		if (game->isClicked(mX, mY)) {
 			Mix_HaltMusic();
+			Mix_CloseAudio();
 			Current = Structure::INGAME;
 		}
 	}
