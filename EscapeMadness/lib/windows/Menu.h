@@ -17,7 +17,6 @@ private:
 	Button* title;
 	int Current;
 
-
 public:
 
 	Menu(int id) {
@@ -41,16 +40,19 @@ public:
 		}
 
 		music = Mix_LoadMUS( "./res/OST/Bonehead - Naked City.wav");
+
 		this->title = new Button((char*) "Escape Madness", 35, 140, Background, 150);
 		this->game = new Button((char*) "PRESIONA AQUI PARA COMENZAR", 300, 340, Background, 40);
-		Mix_PlayMusic( music, -1 );
+
+		Mix_PlayMusic( music, 0 );
 		return true;
 	}
 
 	int Loop() {
-		if( Mix_PlayingMusic() == 0 ){
+
+		if( Mix_PlayingMusic() == 0 ) {
 			music = Mix_LoadMUS( "./res/OST/01 - Ocean of Molasses.wav");
-			Mix_PlayMusic( music, -1 );
+			Mix_PlayMusic( music, 0);
 		}
 
 		if (Current != Structure::MENU) {
@@ -58,6 +60,8 @@ public:
 		}
 		return Current;
 	}
+
+
 
 	void Render(SDL_Surface* Display,float camera=0) {
 
@@ -104,8 +108,8 @@ public:
 
 	void OnLButtonDown(int mX, int mY) {
 		if (game->isClicked(mX, mY)) {
-			Current = Structure::INGAME;
 			Mix_HaltMusic();
+			Current = Structure::INGAME;
 		}
 	}
 
