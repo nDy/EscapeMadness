@@ -62,8 +62,10 @@ public:
 
 	}
 
-	void Cleanup() const {
+	void Cleanup() {
 		SDL_FreeSurface(Background);
+		Mix_FreeMusic( music );
+		Mix_CloseAudio();
 	}
 
 	//Events

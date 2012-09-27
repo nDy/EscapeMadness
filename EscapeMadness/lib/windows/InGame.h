@@ -5,8 +5,6 @@
 #include "../common/Level.h"
 #include <SDL/SDL.h>
 #include <Box2D/Box2D.h>
-#include <SDL/SDL_mixer.h>
-
 #include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
