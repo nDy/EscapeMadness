@@ -105,13 +105,13 @@ public:
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
-		if (sym == SDLK_SPACE)
+		if (sym == SDLK_w)
 			this->lvl->getPlayer()->jump();
 
-		if (sym == SDLK_RIGHT)
+		if (sym == SDLK_d)
 			this->MoveRight = true;
 
-		if (sym == SDLK_LEFT)
+		if (sym == SDLK_a)
 			this->MoveLeft = true;
 	}
 

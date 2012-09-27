@@ -87,6 +87,7 @@ public:
 				if (fixb->IsSensor()) {
 
 					if (!fixa->GetBody()->IsBullet()) {
+						std::cout << "is bullet" << std::endl;
 						if (shoot % 60 == 0)
 							this->Shoot(fixa->GetBody()->GetTransform().p.x,
 									fixa->GetBody()->GetTransform().p.y);
@@ -119,7 +120,7 @@ public:
 		sensor->shape = &sensorShape;
 		sensor->isSensor = true;
 		def->shape = &dynamicBox;
-		def->filter.categoryBits = 0x0002;
+		def->filter.categoryBits = 0x0004;
 		this->body->CreateFixture(def);
 		this->body->CreateFixture(sensor);
 

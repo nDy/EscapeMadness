@@ -165,6 +165,7 @@ public:
 		b2FixtureDef * fixture;
 		fixture = new b2FixtureDef();
 		fixture->shape = &bulletShape;
+		fixture->filter.groupIndex = 2;
 		fixture->filter.maskBits = 0x0004;
 		fixture->userData = this->bullet;
 		this->bullets[i]->CreateFixture(fixture);

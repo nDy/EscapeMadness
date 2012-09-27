@@ -14,6 +14,7 @@ private:
 	Button* title;
 	int Current;
 
+
 public:
 	Menu(int id) {
 		Current = id;
