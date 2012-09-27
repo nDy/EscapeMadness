@@ -135,11 +135,11 @@ public:
 	}
 
 	void Cleanup() const {
-		SDL_Quit();
 		intro->Cleanup();
 		menu->Cleanup();
 		help->Cleanup();
 		ingame->Cleanup();
+		SDL_Quit();
 	}
 
 	int Execute() {

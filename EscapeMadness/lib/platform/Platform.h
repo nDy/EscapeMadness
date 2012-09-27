@@ -42,9 +42,35 @@ public:
 		this->y = y;
 	}
 
+	Platform(int x, int y, b2World*& world, int orientation) {
+		b2BodyDef* def;
+		def = new b2BodyDef();
+		def->type = b2_kinematicBody;
+		def->position.Set(x, y);
+		body = world->CreateBody(def);
+		type = orientation;
+		this->movementlength = 2 * LENGTH;
+		this->x = x;
+		this->y = y;
+	}
+
+	Platform(int x, int y, float angle, b2World*& world) {
+		b2BodyDef* def;
+		def = new b2BodyDef();
+		def->type = b2_kinematicBody;
+		def->position.Set(x, y);
+		def->angle = angle;
+		body = world->CreateBody(def);
+		type = STATIC;
+		this->movementlength = 2 * LENGTH;
+		this->x = x;
+		this->y = y;
+	}
+
 	Platform(int x, int y, float movementlength, short orientation,
 			b2World world) {
 		b2BodyDef* def;
+		def = new b2BodyDef();
 		def->type = b2_kinematicBody;
 		def->position.Set(x, y);
 		body = world.CreateBody(def);
@@ -52,17 +78,9 @@ public:
 		this->movementlength = movementlength;
 	}
 
-	Platform(int x, int y, float angle, b2World*& world) {
-		b2BodyDef* def;
-		def->type = b2_kinematicBody;
-		def->position.Set(x, y);
-		body = world->CreateBody(def);
-		type = STATIC;
-		this->movementlength = 2 * LENGTH;
-	}
-
 	Platform(int x, int y, float angle, float movementlength, b2World*& world) {
 		b2BodyDef* def;
+		def = new b2BodyDef();
 		def->type = b2_kinematicBody;
 		def->position.Set(x, y);
 		body = world->CreateBody(def);
@@ -73,6 +91,7 @@ public:
 	Platform(int x, int y, float angle, float movementlength, short orientation,
 			b2World*& world) {
 		b2BodyDef* def;
+		def = new b2BodyDef();
 		def->type = b2_kinematicBody;
 		def->position.Set(x, y);
 		body = world->CreateBody(def);
@@ -93,16 +112,56 @@ public:
 		return true;
 	}
 
-	void Event(SDL_Event* Event) {
-
-	}
-
 	void Loop() {
+		bool up;
+		switch (type) {
+
+		case STATIC:
+			break;
+
+		case VERTICAL:
+			if (body->GetTransform().p.y >= this->y + movementlength)
+				up = false;
+
+			else if (body->GetTransform().p.y <= this->y)
+				up = true;
+
+			if (up)
+				body->SetLinearVelocity(b2Vec2(0, -4));
+			else
+				body->SetLinearVelocity(b2Vec2(0, 8));
+
+			break;
+
+		case HORIZONTAL:
+			/*	if (body.getPosition().x
+			 >= initPos.x + this.length
+			 - Width * Math.cos(angle * Math.PI / 180))
+			 up = false;
+
+			 else if (body.getPosition().x <= initPos.x)
+			 up = true;
+
+			 if (up)
+			 body.m_linearVelocity.x = 8;
+
+			 if (!up)
+			 body.m_linearVelocity.x = -8;
+
+			 body.m_linearVelocity.y = 0;
+			 */
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
-	void Render(SDL_Surface* Display,float PlayerPos) {
-		Surface::Draw(Display, this->img, this->body->GetTransform().p.x-PlayerPos-150,
-				Display->h - this->body->GetTransform().p.y-12);
+	void Render(SDL_Surface* Display, float PlayerPos) {
+		Surface::Draw(Display, this->img,
+				this->body->GetTransform().p.x - PlayerPos - 150,
+				Display->h - this->body->GetTransform().p.y - 12);
 	}
 
 	void Cleanup(b2World* world) {

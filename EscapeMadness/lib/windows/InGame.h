@@ -9,22 +9,17 @@
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
 
-class InGame: public Event {
-
+class InGame: public Event, public Structure {
 private:
-
 	Level *lvl;
 	SDL_Surface* img;
 	int Current;
 	int Lifes;
-	float Life;
 	bool MoveRight;
 	bool MoveLeft;
 
 public:
-
 	InGame(int id) {
-
 		Current = id;
 
 		MoveRight = false;

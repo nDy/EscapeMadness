@@ -64,6 +64,8 @@ public:
 
 
 		if( Mix_PlayingMusic() == 0 ) {
+
+			music = NULL;
 			music = Mix_LoadMUS( "./res/OST/01 - Ocean of Molasses.wav");
 			Mix_PlayMusic( music, 0);
 		}
@@ -86,8 +88,6 @@ public:
 
 	void Cleanup() {
 		SDL_FreeSurface(Background);
-		delete game;
-		delete title;
 		Mix_FreeMusic( music );
 	}
 
@@ -121,7 +121,7 @@ public:
 	void OnLButtonDown(int mX, int mY) {
 		if (game->isClicked(mX, mY)) {
 			Mix_HaltMusic();
-			Mix_CloseAudio();
+		//	Mix_CloseAudio();
 			Current = Structure::INGAME;
 		}
 	}

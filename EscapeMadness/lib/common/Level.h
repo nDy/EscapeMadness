@@ -12,8 +12,13 @@
 #include "../character/Player.h"
 #include "../character/Enemy.h"
 #include "../platform/Platform.h"
+#include <cmath>
 
 class Level {
+
+	enum {
+		PLATFORMS = 6
+	};
 
 private:
 
@@ -44,7 +49,7 @@ public:
 
 		world = new b2World(b2Vec2(0, -9.8));
 
-		player = new Player(200, 205, world);
+		player = new Player(200, 405, world);
 
 		enemy[0] = new Enemy(900, 205, world, 2);
 		enemy[1] = new Enemy(1500, 205, world, 4);
@@ -62,19 +67,48 @@ public:
 		enemy[13] = new Enemy(23500, 205, world, 1);
 		enemy[14] = new Enemy(24000, 205, world, 1);
 
-		platform = new Platform*[50];
+		platform = new Platform*[PLATFORMS];
 
-		for (int i = 0; i < 50; i++) {
-			platform[i] = new Platform(150 + 300 * i, 100, world);
-		}
-
+		platform[0] = new Platform(0, 650, 90, world);
+		platform[1] = new Platform(0, 350, 90, world);
+		platform[2] = new Platform(150, 200, world);
+		platform[3] = new Platform(450, 200, world);
+		platform[4] = new Platform(750, 200, world);
+		platform[5] = new Platform(1050, 200, world, 1);
+		/*
+		 platform[8] = new Platform(x, y, world);
+		 platform[9] = new Platform(x, y, world);
+		 platform[10] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 platform[i] = new Platform(x, y, world);
+		 */
 		player->Init();
 
 		for (int i = 0; i < 15; i++) {
 			enemy[i]->Init();
 		}
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < PLATFORMS; i++) {
 			platform[i]->Init();
 		}
 
@@ -83,7 +117,7 @@ public:
 
 	void Loop() {
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < PLATFORMS; i++) {
 			platform[i]->Loop();
 		}
 
@@ -98,21 +132,21 @@ public:
 
 		player->bulletLoop();
 
-		for(int i = 0; i < 15; i++){
+		for (int i = 0; i < 15; i++) {
 			if (this->enemy[i] != NULL)
-			enemy[i]->bulletLoop();
+				enemy[i]->bulletLoop();
 		}
 
-		for(int i = 0; i < 15; i++){
-			if (this->enemy[i] != NULL){
-				if (this->enemy[i]->getLifes() == 0){
+		for (int i = 0; i < 15; i++) {
+			if (this->enemy[i] != NULL) {
+				if (this->enemy[i]->getLifes() == 0) {
 					enemy[i]->Cleanup();
 					enemy[i] = NULL;
 				}
 			}
 		}
 
-		if (player->lifes() > 0){
+		if (player->lifes() > 0) {
 			world->Step(1.0f / 60.0f, 24, 8);
 		}
 
@@ -131,10 +165,9 @@ public:
 		Surface::Draw(Display, Background, -camera - Background->w, 0);
 		Surface::Draw(Display, Background, -camera, 0);
 
-		for (int i = 1; i <= 37; i++){
+		for (int i = 1; i <= 37; i++) {
 			Surface::Draw(Display, Background, i * Background->w - camera, 0);
 		}
-
 
 		player->Render(Display, camera);
 
@@ -143,7 +176,7 @@ public:
 				enemy[i]->Render(Display, camera);
 		}
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < PLATFORMS; i++) {
 			platform[i]->Render(Display, camera);
 		}
 
@@ -156,7 +189,7 @@ public:
 	void Cleanup() {
 		SDL_FreeSurface(Background);
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < PLATFORMS; i++) {
 			this->platform[i]->Cleanup(this->world);
 		}
 

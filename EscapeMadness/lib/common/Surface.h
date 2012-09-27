@@ -6,9 +6,7 @@
 #include <SDL/SDL_image.h>
 
 class Surface {
-
 public:
-
 	Surface();
 
 	static SDL_Surface* Load(const char* File) {
