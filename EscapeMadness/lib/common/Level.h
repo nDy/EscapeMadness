@@ -14,7 +14,9 @@
 #include "../platform/Platform.h"
 
 class Level {
+
 private:
+
 	b2World* world;
 	Player * player;
 	Enemy ** enemy;
@@ -128,16 +130,11 @@ public:
 
 		Surface::Draw(Display, Background, -camera - Background->w, 0);
 		Surface::Draw(Display, Background, -camera, 0);
-		Surface::Draw(Display, Background, Background->w - camera, 0);
-		Surface::Draw(Display, Background, 2 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 3 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 4 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 5 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 6 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 7 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 8 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 9 * Background->w - camera, 0);
-		Surface::Draw(Display, Background, 10 * Background->w - camera, 0);
+
+		for (int i = 1; i <= 37; i++){
+			Surface::Draw(Display, Background, i * Background->w - camera, 0);
+		}
+
 
 		player->Render(Display, camera);
 
