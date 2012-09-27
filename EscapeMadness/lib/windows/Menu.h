@@ -8,10 +8,12 @@
 
 class Menu: public Event, public Structure {
 private:
+
 	SDL_Surface* Background;
 	Button* game;
-	Button* help;
+	Button* title;
 	int Current;
+
 public:
 	Menu(int id) {
 		Current = id;
@@ -19,7 +21,7 @@ public:
 
 	bool Init() {
 
-		Background = Surface::Load("./res/bg.bmp");
+		Background = Surface::Load("./res/Fondos/back.jpg");
 
 		if (Background == NULL) {
 			return false;
@@ -29,8 +31,8 @@ public:
 			return false;
 		}
 
-		this->game = new Button((char*) "Jugar", 20, 20, Background);
-		this->help = new Button((char*) "Ayuda", 20, 120, Background);
+		this->title = new Button((char*) "Escape Madness", 35, 140, Background, 150);
+		this->game = new Button((char*) "PRESIONA AQUI PARA COMENZAR", 300, 340, Background, 40);
 
 		return true;
 	}
@@ -48,7 +50,7 @@ public:
 
 		this->game->render();
 
-		this->help->render();
+		this->title->render();
 
 	}
 
@@ -84,9 +86,6 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-		if (help->isClicked(mX, mY)) {
-			Current = Structure::HELP;
-		}
 		if (game->isClicked(mX, mY)) {
 			Current = Structure::INGAME;
 		}

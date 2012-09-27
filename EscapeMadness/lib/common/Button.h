@@ -16,17 +16,20 @@ class Button {
 	int x;
 	int y;
 	char* text;
+	int size;
+
 public:
-	Button(char* input, int x, int y, SDL_Surface* bg) {
+	Button(char* input, int x, int y, SDL_Surface* bg, int size) {
 		Background = bg;
 		this->x = x;
 		this->y = y;
 		text = input;
+		this->size = size;
 
 	}
 
 	void render() {
-		Surface::DrawText(text, Background, x, y, 255, 255, 255, 50);
+		Surface::DrawText(text, Background, x, y, 247, 49, 49, size);
 	}
 
 	bool isClicked(int mX, int mY) {
