@@ -97,8 +97,8 @@ public:
 
 	void OnLButtonDown(int mX, int mY) {
 		if (game->isClicked(mX, mY)) {
-			Mix_HaltMusic();
 			Current = Structure::INGAME;
+			Mix_HaltMusic();
 		}
 	}
 
