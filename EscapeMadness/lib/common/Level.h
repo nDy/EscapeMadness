@@ -90,8 +90,7 @@ public:
 		for (int i = 0; i < 15; i++) {
 
 			if (this->enemy[i] != NULL) {
-				if (this->enemy[i]->Loop() == -1)
-					this->enemy[i] = NULL;
+				this->enemy[i]->Loop();
 			}
 		}
 
@@ -102,8 +101,18 @@ public:
 			enemy[i]->bulletLoop();
 		}
 
-		if (player->lifes() > 0)
+		for(int i = 0; i < 15; i++){
+			if (this->enemy[i] != NULL){
+				if (this->enemy[i]->getLifes() == 0){
+					enemy[i]->Cleanup();
+					enemy[i] = NULL;
+				}
+			}
+		}
+
+		if (player->lifes() > 0){
 			world->Step(1.0f / 60.0f, 24, 8);
+		}
 
 		if (camera + 1024 - player->getBody()->GetTransform().p.x < 400)
 			camera = player->getBody()->GetTransform().p.x - 1024 + 400;
@@ -124,6 +133,11 @@ public:
 		Surface::Draw(Display, Background, 3 * Background->w - camera, 0);
 		Surface::Draw(Display, Background, 4 * Background->w - camera, 0);
 		Surface::Draw(Display, Background, 5 * Background->w - camera, 0);
+		Surface::Draw(Display, Background, 6 * Background->w - camera, 0);
+		Surface::Draw(Display, Background, 7 * Background->w - camera, 0);
+		Surface::Draw(Display, Background, 8 * Background->w - camera, 0);
+		Surface::Draw(Display, Background, 9 * Background->w - camera, 0);
+		Surface::Draw(Display, Background, 10 * Background->w - camera, 0);
 
 		player->Render(Display, camera);
 

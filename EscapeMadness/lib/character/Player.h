@@ -1,5 +1,5 @@
 /*
- * Enemy.h
+ * Player.h
  *
  *  Created on: Sep 23, 2012
  *      Author: ndy
@@ -13,7 +13,7 @@
 #include "../common/Structure.h"
 #include "../common/Surface.h"
 
-class Player: public Structure {
+class Player {
 
 private:
 
@@ -40,41 +40,37 @@ public:
 		return this->life;
 	}
 
-	bool wasHit() {
-		if (life < 1)
-			return false;
+	int wasHit() {
 
-		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
+		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next) {
 
-		{
 			b2Contact* c = ce->contact;
 
 			if (c->GetFixtureB()->GetBody()->IsBullet()) {
-				life--;
-				return true;
+				return 1;
 			} else if (c->GetFixtureB()->GetFilterData().groupIndex == 3
 					&& c->GetFixtureB()->GetFilterData().categoryBits != 1) {
-				life = life - 4;
-				return true;
+				return 2;
+			} else if (c->GetFixtureB()->GetFilterData().groupIndex == 1) {
+				return 0;
 			}
 		}
 
-		return false;
+		return -1;
 	}
 
 	void bulletLoop(){
+
 		for (int i = 0; i < 50; i++) {
 				if (this->bullets[i] != NULL)
 
-					for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
-							ce = ce->next)
-
-							{
+					for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce; ce = ce->next) {
 						{
 							this->bullets[i]->SetActive(false);
 							this->world->DestroyBody(this->bullets[i]);
 							this->bullets[i] = NULL;
 						}
+
 					}
 			}
 
@@ -108,22 +104,31 @@ public:
 		}
 	}
 
-	void Cleanup() const {
+	void Cleanup() {
 		SDL_FreeSurface(this->img);
+		this->body->SetActive(false);
+		this->world->DestroyBody(this->body);
+		this->body = NULL;
+		delete this;
 	}
 
-	int Loop() {
+	void Loop() {
 
-		if (wasHit())
+		switch (wasHit()){
+
+		case 0: //Reset jump
+			break;
+
+		case 1:
 			life--;
+			break;
 
-		for (int i = 0; i < 50; i++) {
-			if (this->bullets[i] != NULL)
-				this->bullets[i]->ApplyLinearImpulse(b2Vec2(65000, 0),
-						b2Vec2_zero);
+		case 2:
+			life -= 4;
+			break;
+
 		}
 
-		return 0;
 	}
 
 	SDL_Surface * getImg() {

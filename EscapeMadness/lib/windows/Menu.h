@@ -6,7 +6,7 @@
 #include "../common/Structure.h"
 #include "../common/Button.h"
 
-class Menu: public Event, public Structure {
+class Menu: public Event {
 private:
 
 	SDL_Surface* Background;

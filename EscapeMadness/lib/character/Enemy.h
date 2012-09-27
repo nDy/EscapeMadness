@@ -64,7 +64,7 @@ public:
 		}
 	}
 
-	bool wasHit() {
+	int wasHit() {
 
 		shoot++;
 
@@ -94,15 +94,18 @@ public:
 					//else
 					//dodge the bullet
 				} else {
-					if (fixa->GetBody()->IsBullet())
-						life--;
-					else
-						life = 0;
-					return true;
+					if (fixa->GetBody()->IsBullet()) {
+						return 1;
+					} else if (fixa->GetFilterData().groupIndex == 1) {
+						return 0;
+					} else if (fixa->GetFilterData().groupIndex == 2) {
+						return 2;
+					}
 				}
 			}
 		}
-		return false;
+
+		return -1;
 	}
 
 	bool Init() {
@@ -159,20 +162,24 @@ public:
 		delete this;
 	}
 
-	int Loop() {
+	void Loop() {
 
-		this->wasHit();
+		switch (wasHit()){
+			case 0:
+				break;
+
+			case 1:
+				life--;
+				break;
+
+			case 2:
+				life = 0;
+				break;
+		}
+
 		if (shoot == 60)
 			shoot = 0;
 
-		this->bulletLoop();
-
-		if (this->life == 0) {
-			this->Cleanup();
-			return -1;
-		}
-
-		return 0;
 	}
 
 	SDL_Surface * getImg() {
@@ -242,6 +249,10 @@ public:
 
 	float getMass() {
 		return body->GetMass();
+	}
+
+	int getLifes(){
+		return this->life;
 	}
 
 	void resetJump() {
