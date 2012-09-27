@@ -17,7 +17,7 @@
 class Level {
 
 	enum {
-		PLATFORMS = 6
+		PLATFORMS = 21, ENEMIES = 8
 	};
 
 private:
@@ -33,7 +33,7 @@ private:
 public:
 
 	Level() {
-		this->enemy = new Enemy*[15];
+		this->enemy = new Enemy*[ENEMIES];
 	}
 
 	bool Init() {
@@ -51,30 +51,39 @@ public:
 
 		player = new Player(200, 405, world);
 
-		enemy[0] = new Enemy(900, 205, world, 2);
-		enemy[1] = new Enemy(1500, 205, world, 4);
-		enemy[2] = new Enemy(2500, 205, world, 3);
-		enemy[3] = new Enemy(4500, 205, world, 1);
-		enemy[4] = new Enemy(9500, 205, world, 2);
-		enemy[5] = new Enemy(12000, 205, world, 2);
-		enemy[6] = new Enemy(13000, 205, world, 4);
-		enemy[7] = new Enemy(14500, 205, world, 1);
-		enemy[8] = new Enemy(16000, 205, world, 4);
-		enemy[9] = new Enemy(17000, 205, world, 2);
-		enemy[10] = new Enemy(19000, 205, world, 2);
-		enemy[11] = new Enemy(20500, 205, world, 2);
-		enemy[12] = new Enemy(22000, 205, world, 3);
-		enemy[13] = new Enemy(23500, 205, world, 1);
-		enemy[14] = new Enemy(24000, 205, world, 1);
+		enemy[0] = new Enemy(1330, 305, world, 2);
+		enemy[1] = new Enemy(2250, 505, world, 4);
+		enemy[2] = new Enemy(2550, 605, world, 3);
+		enemy[3] = new Enemy(4050, 605, world, 1);
+		enemy[4] = new Enemy(5250, 705, world, 2);
+		enemy[5] = new Enemy(5550, 705, world, 2);
+		enemy[6] = new Enemy(7650, 605, world, 4);
+		enemy[7] = new Enemy(7950, 605, world, 1);
 
 		platform = new Platform*[PLATFORMS];
 
-		platform[0] = new Platform(0, 650, 90, world);
-		platform[1] = new Platform(0, 350, 90, world);
-		platform[2] = new Platform(150, 200, world);
-		platform[3] = new Platform(450, 200, world);
-		platform[4] = new Platform(750, 200, world);
-		platform[5] = new Platform(1050, 200, world, 1);
+		platform[0] = new Platform(150, 200, world);
+		platform[1] = new Platform(450, 200, world);
+		platform[2] = new Platform(750, 200, world);
+		platform[3] = new Platform(1050, 200, world);
+		platform[4] = new Platform(1350, 200, world);
+		platform[5] = new Platform(1950, 200, world);
+		platform[6] = new Platform(2250, 350, world);
+		platform[7] = new Platform(2550, 500, world);
+		platform[8] = new Platform(2850, 500, world, 2);
+		platform[9] = new Platform(3450, 500, world, 2);
+		platform[10] = new Platform(4050, 500, world);
+		platform[11] = new Platform(4350, 350, world);
+		platform[12] = new Platform(4650, 550, world);
+		platform[13] = new Platform(5250, 550, world);
+		platform[14] = new Platform(5550, 550, world, 2);
+		platform[15] = new Platform(6150, 350, world);
+		platform[16] = new Platform(6450, 200, world);
+		platform[17] = new Platform(6750, 200, world, 2);
+		platform[18] = new Platform(7350, 350, world);
+		platform[19] = new Platform(7650, 500, world);
+		platform[20] = new Platform(7950, 500, world);
+		platform[21] = new Platform(8250, 500, world);
 		/*
 		 platform[8] = new Platform(x, y, world);
 		 platform[9] = new Platform(x, y, world);
@@ -104,7 +113,7 @@ public:
 		 */
 		player->Init();
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < ENEMIES; i++) {
 			enemy[i]->Init();
 		}
 
@@ -123,7 +132,7 @@ public:
 
 		player->Loop();
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < ENEMIES; i++) {
 
 			if (this->enemy[i] != NULL) {
 				this->enemy[i]->Loop();
@@ -132,12 +141,12 @@ public:
 
 		player->bulletLoop();
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < ENEMIES; i++) {
 			if (this->enemy[i] != NULL)
 				enemy[i]->bulletLoop();
 		}
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < ENEMIES; i++) {
 			if (this->enemy[i] != NULL) {
 				if (this->enemy[i]->getLifes() == 0) {
 					enemy[i]->Cleanup();
@@ -171,7 +180,7 @@ public:
 
 		player->Render(Display, camera);
 
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < ENEMIES; i++) {
 			if (enemy[i] != NULL)
 				enemy[i]->Render(Display, camera);
 		}
@@ -194,7 +203,7 @@ public:
 		}
 
 		this->player->Cleanup();
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < ENEMIES; i++) {
 			if (enemy[i] != NULL)
 				this->enemy[i]->Cleanup();
 		}
