@@ -6,7 +6,7 @@
 class Structure {
 public:
 	enum {
-		MENU, INGAME, HELP
+		INTRO, MENU, INGAME, HELP
 	};
 	Structure() {
 	}

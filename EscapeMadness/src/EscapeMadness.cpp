@@ -8,6 +8,7 @@
 #include <SDL/SDL.h>
 #include <iostream>
 
+#include "../lib/windows/Intro.h"
 #include "../lib/windows/Help.h"
 #include "../lib/windows/Menu.h"
 #include "../lib/windows/InGame.h"
@@ -23,6 +24,7 @@ private:
 	InGame* ingame;
 	Menu* menu;
 	Help* help;
+	Intro* intro;
 
 public:
 
@@ -32,6 +34,7 @@ public:
 		help = new Help(Structure::HELP);
 		menu = new Menu(Structure::MENU);
 		ingame = new InGame(Structure::INGAME);
+		intro = new Intro(Structure::INTRO);
 	}
 
 	~EscapeMadness() {
@@ -39,7 +42,7 @@ public:
 
 	bool Init() {
 
-		Current = Structure::MENU;
+		Current = Structure::INTRO;
 
 		//Inicializacion de SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -57,6 +60,8 @@ public:
 			return false;
 		if (!ingame->Init())
 			return false;
+		if (!intro->Init())
+			return false;
 
 		return true;
 	}
@@ -66,6 +71,10 @@ public:
 			Running = false;
 		}
 		switch (Current) {
+		case Structure::INTRO:
+			intro->CheckEvent(Event);
+			break;
+
 		case Structure::MENU:
 			menu->CheckEvent(Event);
 			break;
@@ -83,6 +92,10 @@ public:
 	int Loop() {
 
 		switch (Current) {
+		case Structure::INTRO:
+			Current = intro->Loop();
+			break;
+
 		case Structure::MENU:
 			Current = menu->Loop();
 			break;
@@ -101,6 +114,10 @@ public:
 
 	void Render(SDL_Surface* display,float camera=0) {
 		switch (Current) {
+		case Structure::INTRO:
+			intro->Render(display);
+			break;
+
 		case Structure::MENU:
 			menu->Render(display);
 			break;
@@ -122,6 +139,7 @@ public:
 		menu->Cleanup();
 		help->Cleanup();
 		ingame->Cleanup();
+		intro->Cleanup();
 	}
 
 	int Execute() {
