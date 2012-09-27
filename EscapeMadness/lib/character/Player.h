@@ -14,14 +14,18 @@
 #include "../common/Surface.h"
 
 class Player: public Structure {
+
 private:
+
 	b2Body* body;
 	b2Body** bullets;
 	SDL_Surface* img;
 	SDL_Surface* bullet;
 	b2World* world;
 	int life;
+
 public:
+
 	Player(float x, float y, b2World*& world) {
 		b2BodyDef* def;
 		def = new b2BodyDef();
@@ -39,20 +43,7 @@ public:
 	bool wasHit() {
 		if (life < 1)
 			return false;
-		for (int i = 0; i < 50; i++) {
-			if (this->bullets[i] != NULL)
 
-				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
-						ce = ce->next)
-
-						{
-					{
-						this->bullets[i]->SetActive(false);
-						this->world->DestroyBody(this->bullets[i]);
-						this->bullets[i] = NULL;
-					}
-				}
-		}
 		for (b2ContactEdge* ce = body->GetContactList(); ce; ce = ce->next)
 
 		{
@@ -69,6 +60,24 @@ public:
 		}
 
 		return false;
+	}
+
+	void bulletLoop(){
+		for (int i = 0; i < 50; i++) {
+				if (this->bullets[i] != NULL)
+
+					for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
+							ce = ce->next)
+
+							{
+						{
+							this->bullets[i]->SetActive(false);
+							this->world->DestroyBody(this->bullets[i]);
+							this->bullets[i] = NULL;
+						}
+					}
+			}
+
 	}
 
 	bool Init() {

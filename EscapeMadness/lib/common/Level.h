@@ -95,7 +95,12 @@ public:
 			}
 		}
 
+		player->bulletLoop();
 
+		for(int i = 0; i < 15; i++){
+			if (this->enemy[i] != NULL)
+			enemy[i]->bulletLoop();
+		}
 
 		if (player->lifes() > 0)
 			world->Step(1.0f / 60.0f, 24, 8);

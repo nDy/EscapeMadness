@@ -87,7 +87,6 @@ public:
 				if (fixb->IsSensor()) {
 
 					if (!fixa->GetBody()->IsBullet()) {
-						std::cout << "is bullet" << std::endl;
 						if (shoot % 60 == 0)
 							this->Shoot(fixa->GetBody()->GetTransform().p.x,
 									fixa->GetBody()->GetTransform().p.y);
