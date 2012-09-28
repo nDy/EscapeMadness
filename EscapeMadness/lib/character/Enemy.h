@@ -33,14 +33,14 @@ public:
 		def->type = b2_dynamicBody;
 		def->position.Set(x, y);
 		body = world->CreateBody(def);
-		bullets = new b2Body*[50];
+		bullets = new b2Body*[5000];
 		this->world = world;
 		this->life = lifes;
 		this->shoot = 0;
 	}
 
 	void bulletLoop() {
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 5000; i++) {
 			if (this->bullets[i] != NULL) {
 
 				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
@@ -109,8 +109,8 @@ public:
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "./res/Player/Standing/Stand1.png");
-		this->bullet = Surface::Load((char*) "./res/bullet.png");
+		this->img = Surface::Load((char*) "./res/enemy.png");
+		this->bullet = Surface::Load((char*) "./res/vomit.png");
 		b2FixtureDef* def;
 		b2FixtureDef* sensor;
 		def = new b2FixtureDef();
@@ -136,7 +136,7 @@ public:
 				this->body->GetTransform().p.x - camera - 50,
 				Display->h - this->body->GetTransform().p.y - 89);
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 5000; i++) {
 			if (this->bullets[i] != NULL)
 				Surface::Draw(Display, this->bullet,
 						this->bullets[i]->GetTransform().p.x - camera - 50,
@@ -259,8 +259,6 @@ public:
 
 	}
 
-	virtual ~Enemy() {
-	}
 };
 
 #endif /* ENEMY_H_ */

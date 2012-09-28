@@ -29,9 +29,9 @@ public:
 
 		Background = Surface::Load("./res/Fondos/back.jpg");
 
-	    if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 ){
-		    return false;
-	    }
+		if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+			return false;
+		}
 
 		if (Background == NULL) {
 			return false;
@@ -41,42 +41,31 @@ public:
 			return false;
 		}
 
-		music = Mix_LoadMUS( "./res/OST/Bonehead - Naked City.wav");
+		music = Mix_LoadMUS("./res/OST/Bonehead - Naked City.wav");
 
-		this->title = new Button((char*) "Escape Madness", 35, 140, Background, 150);
-		this->game = new Button((char*) "PRESIONA AQUI PARA COMENZAR", 300, 340, Background, 40);
-
+		this->title = new Button((char*) "Escape Madness", 35, 140, Background,
+				150);
+		this->game = new Button((char*) "PRESIONA ESPACIO PARA COMENZAR", 300,
+				340, Background, 40);
 
 		return true;
 	}
 
 	int Loop() {
 
-
 		if (Current != Structure::MENU) {
 			this->Cleanup();
 		}
 
-		if( playFirst == false) {
-			Mix_PlayMusic( music, 0 );
+		if (playFirst == false) {
+			Mix_PlayMusic(music, -1);
 			playFirst = true;
 		}
-
-
-		if( Mix_PlayingMusic() == 0 ) {
-
-			music = NULL;
-			music = Mix_LoadMUS( "./res/OST/01 - Ocean of Molasses.wav");
-			Mix_PlayMusic( music, 0);
-		}
-
 
 		return Current;
 	}
 
-
-
-	void Render(SDL_Surface* Display,float camera=0) {
+	void Render(SDL_Surface* Display, float camera = 0) {
 
 		Surface::Draw(Display, Background, camera, 0);
 
@@ -88,8 +77,9 @@ public:
 
 	void Cleanup() {
 		SDL_FreeSurface(Background);
-		Mix_FreeMusic( music );
+		Mix_FreeMusic(music);
 	}
+
 
 	//Events
 
@@ -100,6 +90,12 @@ public:
 	}
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
+		if (sym == SDLK_SPACE) {
+			Mix_HaltMusic();
+			Mix_CloseAudio();
+			Current = Structure::INGAME;
+			this->Cleanup();
+		}
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
@@ -119,11 +115,7 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-		if (game->isClicked(mX, mY)) {
-			Mix_HaltMusic();
-		//	Mix_CloseAudio();
-			Current = Structure::INGAME;
-		}
+
 	}
 
 	void OnLButtonUp(int mX, int mY) {

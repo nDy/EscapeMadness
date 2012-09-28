@@ -47,7 +47,7 @@ public:
 
 		this->camera = 0;
 
-		world = new b2World(b2Vec2(0, -9.8));
+		world = new b2World(b2Vec2(0, -15));
 
 		player = new Player(200, 405, world);
 
@@ -84,33 +84,6 @@ public:
 		platform[19] = new Platform(7650, 500, world);
 		platform[20] = new Platform(7950, 500, world);
 		platform[21] = new Platform(8250, 500, world);
-		/*
-		 platform[8] = new Platform(x, y, world);
-		 platform[9] = new Platform(x, y, world);
-		 platform[10] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 platform[i] = new Platform(x, y, world);
-		 */
 		player->Init();
 
 		for (int i = 0; i < ENEMIES; i++) {
@@ -140,6 +113,7 @@ public:
 		}
 
 		player->bulletLoop();
+
 
 		for (int i = 0; i < ENEMIES; i++) {
 			if (this->enemy[i] != NULL)
@@ -195,6 +169,10 @@ public:
 		return this->player;
 	}
 
+	float getCamera() {
+		return this->camera;
+	}
+
 	void Cleanup() {
 		SDL_FreeSurface(Background);
 
@@ -208,13 +186,19 @@ public:
 				this->enemy[i]->Cleanup();
 		}
 	}
-
-	/*	bool finished() {
-	 if (player->getBody()->GetTransform().p.x >= 10000)
-	 return true;
-	 return false;
-	 }
-	 */
+/*
+	~Level() {
+		delete[] platform;
+		delete[] enemy;
+		delete player;
+		delete world;
+	}
+*/
+	bool finished() {
+		if (player->getBody()->GetTransform().p.x >= 8250)
+			return true;
+		return false;
+	}
 };
 
 #endif /* LEVEL_H_ */

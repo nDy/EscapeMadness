@@ -8,15 +8,19 @@
 #include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
+#include <iostream>
 
 class InGame: public Event, public Structure {
 private:
 	Level *lvl;
 	SDL_Surface* img;
+//	Mix_Music *music;
 	int Current;
 	int Lifes;
 	bool MoveRight;
 	bool MoveLeft;
+	bool finished;
+//	bool playFirst;
 
 public:
 	InGame(int id) {
@@ -24,6 +28,7 @@ public:
 
 		MoveRight = false;
 		MoveLeft = false;
+		//playFirst = false;
 
 	}
 
@@ -31,15 +36,30 @@ public:
 
 		lvl = new Level();
 		lvl->Init();
+		/*
+		 if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+		 return false;
+		 }
+
+		 music = Mix_LoadMUS("./res/OST/chimaira.wav");
+		 */
 		this->img = Surface::Load((char*) "./res/heart.png");
 		return true;
 	}
 
 	int Loop() {
+
 		if (Current != Structure::INGAME) {
 			this->Cleanup();
+			return Current;
 		}
 
+		/*
+		 if (playFirst == false) {
+		 Mix_PlayMusic(music, -1);
+		 playFirst = true;
+		 }
+		 */
 		if (MoveRight)
 			movePlayer(0);
 
@@ -67,30 +87,30 @@ public:
 
 		lvl->Render(Display);
 
-/*		if (lvl->finished()) {
+		if (lvl->finished()) {
 			Surface::DrawText("Nivel terminado", Display, 20, 20, 255, 255, 255,
 					20);
 			Surface::DrawText("Presiona Escape para continuar", Display, 20, 50,
 					255, 255, 255, 20);
 		}
-*/
 		//Draw HUD
 
-		for (int i=0;i<this->lvl->getPlayer()->lifes();i++){
-			Surface::Draw(Display, this->img, (i+1)*25,25);
+		for (int i = 0; i < this->lvl->getPlayer()->lifes(); i++) {
+			Surface::Draw(Display, this->img, (i + 1) * 25, 25);
 		}
 
-		if(lvl->getPlayer()->lifes()<=0){
+		if (lvl->getPlayer()->lifes() <= 0) {
 			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255,
-								75);
+					75);
 		}
-
 
 	}
 
 	void Cleanup() const {
 		lvl->Cleanup();
+		delete lvl;
 		SDL_FreeSurface(this->img);
+//		Mix_FreeMusic(music);
 	}
 
 	//Events
@@ -132,7 +152,7 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-		this->lvl->getPlayer()->Shoot();
+		this->lvl->getPlayer()->Shoot(mX + this->lvl->getCamera(), mY);
 	}
 
 	void OnLButtonUp(int mX, int mY) {
