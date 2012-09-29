@@ -93,7 +93,7 @@ public:
 		if (sym == SDLK_SPACE) {
 			Mix_HaltMusic();
 			Mix_CloseAudio();
-			Current = Structure::INGAME;
+			Current = Structure::STORY;
 		}
 	}
 

@@ -12,27 +12,18 @@ class Story: public Event {
 private:
 
 	SDL_Surface* Background;
-	SDL_Surface* frame;
 	int Current;
-	int show;
-	char * texto;
 
 public:
 
 	Story(int id) {
 		Current = id;
-		show = 0;
 	}
 
 	bool Init() {
 		Background = Surface::Load("./res/Fondos/back.jpg");
-		frame = Surface::Load("./res/frame.png");
 
 		if (Background == NULL) {
-			return false;
-		}
-
-		if (frame == NULL) {
 			return false;
 		}
 
@@ -45,58 +36,17 @@ public:
 			this->Cleanup();
 		}
 
-		switch (show) {
-		case 0:
-			texto = (char *) "Ughhh....";
-			break;
-		case 1:
-			texto =
-					(char *) "(Enfermera) No desesperes, ya traigo algo para el dolor.";
-			break;
-		case 2:
-			texto = (char *) "...";
-			break;
-		case 3:
-			texto = (char *) "******ALARMA SONANDO******";
-			break;
-		case 4:
-			texto =
-					(char *) "(Enfermera) Si te dejo aqui moriras, y... honestamente, no podria hacerte eso.";
-			break;
-		case 5:
-			texto =
-					(char *) "(Enfermera) Vete. La salida siempre es hacia arriba";
-			break;
-		case 6:
-			texto = (char *) "Arghhh";
-			break;
-		case 7:
-			texto = (char *) "...";
-			break;
-		case 8:
-			Current = Structure::INGAME;
-			break;
-
-		}
-
 		return Current;
 	}
 
 	void Render(SDL_Surface* Display, float camera = 0) {
 
 		Surface::Draw(Display, Background, camera, 0);
-		Surface::Draw(Display, frame, 0, 384);
-
-		Surface::DrawText(texto, Display, 25, 400, 255, 255, 255, 20);
-
-		Surface::DrawText((char *) "Presiona espacio para continuar", Display,
-				25, 684, 255, 255, 255, 20);
 
 	}
 
 	void Cleanup() {
 		SDL_FreeSurface(Background);
-		SDL_FreeSurface(frame);
 	}
 
 	//Events
@@ -109,7 +59,7 @@ public:
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 		if (sym == SDLK_SPACE)
-			show++;
+			Current = Structure::INGAME;
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
