@@ -59,7 +59,7 @@ public:
 					}
 				}
 				if (this->bullets[i] != NULL)
-					this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 9.8));
+					this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 70));
 			}
 		}
 	}

@@ -64,7 +64,7 @@ public:
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL) {
-				this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 9.8));
+				this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 70));
 				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
 						ce = ce->next) {
 					{
@@ -188,8 +188,8 @@ public:
 		def = new b2BodyDef();
 		def->type = b2_dynamicBody;
 		def->bullet = true;
-		def->position.Set(100 * X + this->body->GetTransform().p.x,
-				100 * Y + this->body->GetTransform().p.y);
+		def->position.Set(150 * X + this->body->GetTransform().p.x,
+				150 * Y + this->body->GetTransform().p.y);
 		b2CircleShape bulletShape;
 		bulletShape.m_radius = 1;
 		this->bullets[i] = world->CreateBody(def);
