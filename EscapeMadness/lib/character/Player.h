@@ -98,14 +98,14 @@ public:
 
 	void Render(SDL_Surface* Display, float camera) {
 		Surface::Draw(Display, this->img,
-				this->body->GetTransform().p.x - camera - 50,
-				Display->h - this->body->GetTransform().p.y - 89);
+				this->body->GetTransform().p.x - camera - this->img->w/2,
+				Display->h - this->body->GetTransform().p.y - this->img->h/2);
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
 				Surface::Draw(Display, this->bullet,
-						this->bullets[i]->GetTransform().p.x - camera - 50,
-						Display->h - this->bullets[i]->GetTransform().p.y - 89);
+						this->bullets[i]->GetTransform().p.x - camera - this->bullet->w/2,
+						Display->h - this->bullets[i]->GetTransform().p.y - this->bullet->h/2);
 		}
 	}
 
@@ -177,9 +177,9 @@ public:
 		float X = (x - this->body->GetTransform().p.x)
 				/ sqrt(
 						pow(x - this->body->GetTransform().p.x, 2)
-								+ pow(y - this->body->GetTransform().p.y, 2));
+								+ pow((768-y) - this->body->GetTransform().p.y, 2));
 
-		float Y = (this->body->GetTransform().p.y-y)
+		float Y = ((768-y) - this->body->GetTransform().p.y)
 				/ sqrt(
 						pow(x - this->body->GetTransform().p.x, 2)
 								+ pow((768-y) - this->body->GetTransform().p.y, 2));
@@ -201,7 +201,7 @@ public:
 		fixture->filter.maskBits = 0x0004;
 		fixture->userData = this->bullet;
 		this->bullets[i]->CreateFixture(fixture);
-		this->bullets[i]->SetLinearVelocity(b2Vec2(60 * X, 60 * Y));
+		this->bullets[i]->SetLinearVelocity(b2Vec2(600 * X, 600 * Y));
 	}
 
 	float getMass() {

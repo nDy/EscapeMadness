@@ -133,14 +133,14 @@ public:
 		if (this->life == 0)
 			return;
 		Surface::Draw(Display, this->img,
-				this->body->GetTransform().p.x - camera - 50,
-				Display->h - this->body->GetTransform().p.y - 89);
+				this->body->GetTransform().p.x - camera - this->img->w/2,
+				Display->h - this->body->GetTransform().p.y - this->img->h/2);
 
 		for (int i = 0; i < 5000; i++) {
 			if (this->bullets[i] != NULL)
 				Surface::Draw(Display, this->bullet,
-						this->bullets[i]->GetTransform().p.x - camera - 50,
-						Display->h - this->bullets[i]->GetTransform().p.y - 89);
+						this->bullets[i]->GetTransform().p.x - camera - this->bullet->w/2,
+						Display->h - this->bullets[i]->GetTransform().p.y - this->bullet->h/2);
 		}
 	}
 

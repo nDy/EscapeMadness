@@ -160,8 +160,8 @@ public:
 
 	void Render(SDL_Surface* Display, float PlayerPos) {
 		Surface::Draw(Display, this->img,
-				this->body->GetTransform().p.x - PlayerPos - 150,
-				Display->h - this->body->GetTransform().p.y - 12);
+				this->body->GetTransform().p.x - PlayerPos - this->img->w/2,
+				Display->h - this->body->GetTransform().p.y - this->img->h/2);
 	}
 
 	void Cleanup(b2World* world) {
