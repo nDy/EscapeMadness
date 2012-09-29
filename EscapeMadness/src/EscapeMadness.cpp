@@ -45,10 +45,13 @@ public:
 
 	bool Init() {
 
-		//Current = Structure::INGAME;
+		Current = Structure::INTRO;
 
 		//En caso de crash cargando el ingame
-		Current = Structure::INTRO;
+		//Current = Structure::INTRO;
+
+
+
 
 		//Inicializacion de SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)

@@ -12,7 +12,6 @@
 #include <Box2D/Box2D.h>
 #include "../common/Structure.h"
 #include "../common/Surface.h"
-#include <cmath>
 
 class Player {
 
@@ -35,8 +34,6 @@ public:
 		def->position.Set(x, y);
 		body = world->CreateBody(def);
 		bullets = new b2Body*[50];
-		for(int i = 0;i<50;i++)
-			bullets[i]=NULL;
 		this->world = world;
 	}
 
@@ -67,18 +64,14 @@ public:
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL) {
+				this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 9.8));
 				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
 						ce = ce->next) {
 					{
 						this->bullets[i]->SetActive(false);
-						std::cout << "entra aqui" << std::endl;
-
 						this->world->DestroyBody(this->bullets[i]);
-
 						this->bullets[i] = NULL;
 					}
-					if(this->bullets[i]!=NULL)
-						this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 9.8));
 
 				}
 
@@ -181,8 +174,15 @@ public:
 				i = 0;
 		}
 
-		float X = (x - this->body->GetTransform().p.x) / sqrt(pow(x - this->body->GetTransform().p.x, 2) + pow(y - this->body->GetTransform().p.y, 2));
-		float Y = (this->body->GetTransform().p.y-y) / sqrt( pow(x - this->body->GetTransform().p.x, 2) + pow((768-y) - this->body->GetTransform().p.y, 2));
+		float X = (x - this->body->GetTransform().p.x)
+				/ sqrt(
+						pow(x - this->body->GetTransform().p.x, 2)
+								+ pow(y - this->body->GetTransform().p.y, 2));
+
+		float Y = (this->body->GetTransform().p.y-y)
+				/ sqrt(
+						pow(x - this->body->GetTransform().p.x, 2)
+								+ pow((768-y) - this->body->GetTransform().p.y, 2));
 
 		b2BodyDef* def;
 		def = new b2BodyDef();

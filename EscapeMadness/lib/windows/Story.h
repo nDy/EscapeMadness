@@ -1,5 +1,5 @@
-#ifndef MENU_H_
-#define MENU_H_
+#ifndef STORY_H_
+#define STORY_H_
 
 #include <SDL/SDL.h>
 #include "Event.h"
@@ -7,59 +7,76 @@
 #include "../common/Button.h"
 #include <SDL/SDL_mixer.h>
 
-class Menu: public Event {
+class Story: public Event {
 
 private:
 
 	SDL_Surface* Background;
-	Mix_Music *music;
-	Button* game;
-	Button* title;
+	SDL_Surface* frame;
 	int Current;
-	bool playFirst;
+	int show;
+	char * texto;
 
 public:
 
-	Menu(int id) {
+	Story(int id) {
 		Current = id;
-		playFirst = false;
+		show = 0;
 	}
 
 	bool Init() {
-
 		Background = Surface::Load("./res/Fondos/back.jpg");
-
-		if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
-			return false;
-		}
+		frame = Surface::Load("./res/frame.png");
 
 		if (Background == NULL) {
 			return false;
 		}
 
-		if (TTF_Init() == -1) {
+		if (frame == NULL) {
 			return false;
 		}
-
-		music = Mix_LoadMUS("./res/OST/Bonehead - Naked City.wav");
-
-		this->title = new Button((char*) "Escape Madness", 35, 140, Background,
-				150);
-		this->game = new Button((char*) "PRESIONA ESPACIO PARA COMENZAR", 300,
-				340, Background, 40);
 
 		return true;
 	}
 
 	int Loop() {
 
-		if (Current != Structure::MENU) {
+		if (Current != Structure::STORY) {
 			this->Cleanup();
 		}
 
-		if (playFirst == false) {
-			Mix_PlayMusic(music, -1);
-			playFirst = true;
+		switch (show) {
+		case 0:
+			texto = (char *) "Ughhh....";
+			break;
+		case 1:
+			texto =
+					(char *) "(Enfermera) No desesperes, ya traigo algo para el dolor.";
+			break;
+		case 2:
+			texto = (char *) "...";
+			break;
+		case 3:
+			texto = (char *) "******ALARMA SONANDO******";
+			break;
+		case 4:
+			texto =
+					(char *) "(Enfermera) Si te dejo aqui moriras, y... honestamente, no podria hacerte eso.";
+			break;
+		case 5:
+			texto =
+					(char *) "(Enfermera) Vete. La salida siempre es hacia arriba";
+			break;
+		case 6:
+			texto = (char *) "Arghhh";
+			break;
+		case 7:
+			texto = (char *) "...";
+			break;
+		case 8:
+			Current = Structure::INGAME;
+			break;
+
 		}
 
 		return Current;
@@ -68,18 +85,19 @@ public:
 	void Render(SDL_Surface* Display, float camera = 0) {
 
 		Surface::Draw(Display, Background, camera, 0);
+		Surface::Draw(Display, frame, 0, 384);
 
-		this->game->render();
+		Surface::DrawText(texto, Display, 25, 400, 255, 255, 255, 20);
 
-		this->title->render();
+		Surface::DrawText((char *) "Presiona espacio para continuar", Display,
+				25, 684, 255, 255, 255, 20);
 
 	}
 
 	void Cleanup() {
 		SDL_FreeSurface(Background);
-		Mix_FreeMusic(music);
+		SDL_FreeSurface(frame);
 	}
-
 
 	//Events
 
@@ -90,11 +108,8 @@ public:
 	}
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
-		if (sym == SDLK_SPACE) {
-			Mix_HaltMusic();
-			Mix_CloseAudio();
-			Current = Structure::INGAME;
-		}
+		if (sym == SDLK_SPACE)
+			show++;
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
@@ -114,7 +129,6 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
-
 	}
 
 	void OnLButtonUp(int mX, int mY) {
@@ -167,4 +181,4 @@ public:
 	}
 };
 
-#endif /* MENU_H_ */
+#endif /* STORY_H_ */

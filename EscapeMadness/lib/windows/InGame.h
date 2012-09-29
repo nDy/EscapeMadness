@@ -8,7 +8,6 @@
 #include "../common/Structure.h"
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
-#include <iostream>
 
 class InGame: public Event, public Structure {
 private:
@@ -48,12 +47,9 @@ public:
 	}
 
 	int Loop() {
-
 		if (Current != Structure::INGAME) {
 			this->Cleanup();
-			return Current;
 		}
-
 		/*
 		 if (playFirst == false) {
 		 Mix_PlayMusic(music, -1);
@@ -112,6 +108,7 @@ public:
 		SDL_FreeSurface(this->img);
 //		Mix_FreeMusic(music);
 	}
+
 
 	//Events
 

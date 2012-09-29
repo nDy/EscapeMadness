@@ -114,7 +114,6 @@ public:
 
 		player->bulletLoop();
 
-
 		for (int i = 0; i < ENEMIES; i++) {
 			if (this->enemy[i] != NULL)
 				enemy[i]->bulletLoop();
