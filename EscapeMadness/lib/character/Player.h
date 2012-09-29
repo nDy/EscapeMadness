@@ -19,11 +19,15 @@ private:
 
 	b2Body* body;
 	b2Body** bullets;
-	SDL_Surface* img;
+	SDL_Surface** img;
+	SDL_Surface** walkImg;
 	SDL_Surface* bullet;
 	b2World* world;
 	int life;
 	int jumping;
+	int standingFrame;
+	int walkingFrame;
+	int sec;
 	bool moving;
 
 public:
@@ -36,6 +40,11 @@ public:
 		body = world->CreateBody(def);
 		bullets = new b2Body*[50];
 		this->world = world;
+		this->img = new SDL_Surface*[4];
+		this->walkImg = new SDL_Surface*[8];
+		this->standingFrame = 0;
+		this->walkingFrame = 0;
+		this->sec = 1;
 	}
 
 	int lifes() {
@@ -83,7 +92,21 @@ public:
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "./res/Player/Standing/Stand1.png");
+		this->img[0] = Surface::Load((char*) "./res/Player/Standing/Stand1.png");
+		this->img[1] = Surface::Load((char*) "./res/Player/Standing/Stand2.png");
+		this->img[2] = Surface::Load((char*) "./res/Player/Standing/Stand3.png");
+		this->img[3] = Surface::Load((char*) "./res/Player/Standing/Stand4.png");
+
+		this->walkImg[0] = Surface::Load((char*) "./res/Player/Walking/Walk1.png");
+		this->walkImg[1] = Surface::Load((char*) "./res/Player/Walking/Walk2.png");
+		this->walkImg[2] = Surface::Load((char*) "./res/Player/Walking/Walk3.png");
+		this->walkImg[3] = Surface::Load((char*) "./res/Player/Walking/Walk4.png");
+		this->walkImg[4] = Surface::Load((char*) "./res/Player/Walking/Walk5.png");
+		this->walkImg[5] = Surface::Load((char*) "./res/Player/Walking/Walk6.png");
+		this->walkImg[6] = Surface::Load((char*) "./res/Player/Walking/Walk7.png");
+		this->walkImg[7] = Surface::Load((char*) "./res/Player/Walking/Walk8.png");
+
+
 		this->bullet = Surface::Load((char*) "./res/Fireball.png");
 		b2FixtureDef* def;
 		def = new b2FixtureDef();
@@ -99,9 +122,19 @@ public:
 	}
 
 	void Render(SDL_Surface* Display, float camera) {
-		Surface::Draw(Display, this->img,
-				this->body->GetTransform().p.x - camera - this->img->w / 2,
-				Display->h - this->body->GetTransform().p.y - this->img->h / 2);
+
+		if (!moving){
+
+			Surface::Draw(Display, this->img[standingFrame],
+					this->body->GetTransform().p.x - camera - this->img[standingFrame]->w/2,
+					Display->h - this->body->GetTransform().p.y - this->img[standingFrame]->h/2);
+		} else {
+
+			Surface::Draw(Display, this->walkImg[walkingFrame],
+					this->body->GetTransform().p.x - camera - this->walkImg[walkingFrame]->w/2,
+					Display->h - this->body->GetTransform().p.y - this->walkImg[walkingFrame]->h/2);
+
+		}
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
@@ -114,7 +147,9 @@ public:
 	}
 
 	void Cleanup() {
-		SDL_FreeSurface(this->img);
+		for (int i = 0; i < 4; i++)
+			SDL_FreeSurface(this->img[i]);
+
 		this->body->SetActive(false);
 		this->world->DestroyBody(this->body);
 		this->body = NULL;
@@ -122,6 +157,22 @@ public:
 	}
 
 	void Loop() {
+
+		if (sec % 10 == 0){
+			standingFrame++;
+			if (standingFrame > 3){
+				standingFrame = 0;
+			}
+		}
+
+		if (sec % 10 == 0){
+			walkingFrame++;
+			if (walkingFrame > 7){
+				walkingFrame = 0;
+			}
+		}
+
+		sec++;
 
 		switch (wasHit()) {
 
@@ -142,7 +193,7 @@ public:
 	}
 
 	SDL_Surface * getImg() {
-		return this->img;
+		return this->img[standingFrame];
 	}
 
 	b2Body * getBody() {
