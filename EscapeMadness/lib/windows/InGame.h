@@ -62,6 +62,9 @@ public:
 		if (MoveLeft)
 			movePlayer(1);
 
+		if (!MoveLeft && !MoveRight)
+			movePlayer(2);
+
 		lvl->Loop();
 
 		return Current;
@@ -76,6 +79,8 @@ public:
 		case 1:
 			this->lvl->getPlayer()->moveLeft();
 			break;
+		case 2:
+			this->lvl->getPlayer()->StopX();
 		}
 	}
 
@@ -120,9 +125,9 @@ public:
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
-		if (sym == SDLK_w)
-			this->lvl->getPlayer()->jump();
-
+		if (sym == SDLK_w){
+				this->lvl->getPlayer()->jump();
+		}
 		if (sym == SDLK_d)
 			this->MoveRight = true;
 

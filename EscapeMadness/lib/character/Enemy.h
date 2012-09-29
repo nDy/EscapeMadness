@@ -122,6 +122,7 @@ public:
 		sensor->shape = &sensorShape;
 		sensor->isSensor = true;
 		def->shape = &dynamicBox;
+		def->filter.groupIndex = 3;
 		def->filter.categoryBits = 0x0004;
 		this->body->CreateFixture(def);
 		this->body->CreateFixture(sensor);

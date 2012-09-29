@@ -24,6 +24,7 @@ private:
 	b2World* world;
 	int life;
 	int jumping;
+	bool moving;
 
 public:
 
@@ -47,7 +48,8 @@ public:
 
 			b2Contact* c = ce->contact;
 
-			if (c->GetFixtureB()->GetBody()->IsBullet() && c->GetFixtureB()->GetFilterData().groupIndex != 2) {
+			if (c->GetFixtureB()->GetBody()->IsBullet()
+					&& c->GetFixtureB()->GetFilterData().groupIndex != 2) {
 				return 1;
 			} else if (c->GetFixtureB()->GetFilterData().groupIndex == 3
 					&& c->GetFixtureB()->GetFilterData().categoryBits != 1) {
@@ -98,14 +100,16 @@ public:
 
 	void Render(SDL_Surface* Display, float camera) {
 		Surface::Draw(Display, this->img,
-				this->body->GetTransform().p.x - camera - this->img->w/2,
-				Display->h - this->body->GetTransform().p.y - this->img->h/2);
+				this->body->GetTransform().p.x - camera - this->img->w / 2,
+				Display->h - this->body->GetTransform().p.y - this->img->h / 2);
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL)
 				Surface::Draw(Display, this->bullet,
-						this->bullets[i]->GetTransform().p.x - camera - this->bullet->w/2,
-						Display->h - this->bullets[i]->GetTransform().p.y - this->bullet->h/2);
+						this->bullets[i]->GetTransform().p.x - camera
+								- this->bullet->w / 2,
+						Display->h - this->bullets[i]->GetTransform().p.y
+								- this->bullet->h / 2);
 		}
 	}
 
@@ -147,23 +151,28 @@ public:
 
 	void jump() {
 		if (jumping < 1) {
-			body->ApplyLinearImpulse(b2Vec2(0, 115), b2Vec2(0, 0));
+
+			body->ApplyLinearImpulse(b2Vec2(0, 1200), b2Vec2(0, 0));
+
 			jumping++;
 		}
 	}
 
 	void moveRight() {
-		//body->ApplyLinearImpulse(b2Vec2(5, 0), b2Vec2(0, 0));
-		body->ApplyForceToCenter(b2Vec2(60, 0));
+		body->ApplyLinearImpulse(b2Vec2(300, body->GetLinearVelocity().y), b2Vec2(0, 0));
+		moving = true;
 	}
 
 	void moveLeft() {
 		//body->ApplyLinearImpulse(b2Vec2(-5, 0), b2Vec2(0, 0));
-		body->ApplyForceToCenter(b2Vec2(-60, 0));
+
+		body->ApplyLinearImpulse(b2Vec2(-300, body->GetLinearVelocity().y), b2Vec2(0, 0));
+		moving = true;
 	}
 
-	void Stop() {
-		body->SetLinearVelocity(b2Vec2_zero);
+	void StopX() {
+		body->SetLinearVelocity(b2Vec2(0, body->GetLinearVelocity().y));
+		moving = false;
 	}
 	void Shoot(int x, int y) {
 		int i = 0;
@@ -174,15 +183,23 @@ public:
 				i = 0;
 		}
 
-		float X = (x - this->body->GetTransform().p.x)
-				/ sqrt(
-						pow(x - this->body->GetTransform().p.x, 2)
-								+ pow((768-y) - this->body->GetTransform().p.y, 2));
+		float X =
+				(x - this->body->GetTransform().p.x)
+						/ sqrt(
+								pow(x - this->body->GetTransform().p.x, 2)
+										+ pow(
+												(768 - y)
+														- this->body->GetTransform().p.y,
+												2));
 
-		float Y = ((768-y) - this->body->GetTransform().p.y)
-				/ sqrt(
-						pow(x - this->body->GetTransform().p.x, 2)
-								+ pow((768-y) - this->body->GetTransform().p.y, 2));
+		float Y =
+				((768 - y) - this->body->GetTransform().p.y)
+						/ sqrt(
+								pow(x - this->body->GetTransform().p.x, 2)
+										+ pow(
+												(768 - y)
+														- this->body->GetTransform().p.y,
+												2));
 
 		b2BodyDef* def;
 		def = new b2BodyDef();

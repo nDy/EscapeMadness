@@ -162,6 +162,9 @@ public:
 		Surface::Draw(Display, this->img,
 				this->body->GetTransform().p.x - PlayerPos - this->img->w/2,
 				Display->h - this->body->GetTransform().p.y - this->img->h/2);
+	//	if (this->type== STATIC)
+			// Dibujar bajo la plataforma hasta que se acaba la pantalla
+
 	}
 
 	void Cleanup(b2World* world) {
