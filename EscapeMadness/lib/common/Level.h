@@ -47,7 +47,7 @@ public:
 
 		this->camera = 0;
 
-		world = new b2World(b2Vec2(0, -15));
+		world = new b2World(b2Vec2(0, -70));
 
 		player = new Player(200, 405, world);
 

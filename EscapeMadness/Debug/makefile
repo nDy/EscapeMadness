@@ -44,7 +44,7 @@ all: EscapeMadness
 EscapeMadness: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -lm -Xlinker -lm -o "EscapeMadness" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/usr/local/include -L/usr/local/lib -lm -Xlinker -lm -o "EscapeMadness" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

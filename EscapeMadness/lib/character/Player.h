@@ -147,19 +147,19 @@ public:
 
 	void jump() {
 		if (jumping < 1) {
-			body->ApplyLinearImpulse(b2Vec2(0, 70), b2Vec2(0, 0));
+			body->ApplyLinearImpulse(b2Vec2(0, 115), b2Vec2(0, 0));
 			jumping++;
 		}
 	}
 
 	void moveRight() {
 		//body->ApplyLinearImpulse(b2Vec2(5, 0), b2Vec2(0, 0));
-		body->ApplyForceToCenter(b2Vec2(20, 0));
+		body->ApplyForceToCenter(b2Vec2(60, 0));
 	}
 
 	void moveLeft() {
 		//body->ApplyLinearImpulse(b2Vec2(-5, 0), b2Vec2(0, 0));
-		body->ApplyForceToCenter(b2Vec2(-20, 0));
+		body->ApplyForceToCenter(b2Vec2(-60, 0));
 	}
 
 	void Stop() {

@@ -6,7 +6,6 @@
 #include <SDL/SDL_image.h>
 
 class Surface {
-
 public:
 	Surface();
 
