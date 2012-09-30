@@ -160,11 +160,19 @@ public:
 
 	void Render(SDL_Surface* Display, float PlayerPos) {
 		Surface::Draw(Display, this->img,
-				this->body->GetTransform().p.x - PlayerPos - this->img->w/2,
-				Display->h - this->body->GetTransform().p.y - this->img->h/2);
-	//	if (this->type== STATIC)
-			// Dibujar bajo la plataforma hasta que se acaba la pantalla
-
+				this->body->GetTransform().p.x - PlayerPos - this->img->w / 2,
+				Display->h - this->body->GetTransform().p.y - this->img->h / 2);
+		if (this->type == STATIC) {
+			//reemplazar this img con la imagen del relleno
+			int i = this->body->GetTransform().p.y;
+			do {
+				i -= this->img->h;
+				Surface::Draw(Display, this->img,
+						this->body->GetTransform().p.x - PlayerPos
+								- this->img->w / 2,
+						Display->h - i - this->img->h / 2);
+			} while (i > 0);
+		}
 	}
 
 	void Cleanup(b2World* world) {

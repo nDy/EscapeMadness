@@ -53,10 +53,6 @@ public:
 
 	int Loop() {
 
-		if (Current != Structure::MENU) {
-			this->Cleanup();
-		}
-
 		if (playFirst == false) {
 			Mix_PlayMusic(music, -1);
 			playFirst = true;

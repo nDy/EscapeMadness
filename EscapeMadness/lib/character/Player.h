@@ -137,7 +137,7 @@ public:
 		b2FixtureDef* def;
 		def = new b2FixtureDef();
 		b2PolygonShape dynamicBox;
-		dynamicBox.SetAsBox(50.0f, 100.0f);
+		dynamicBox.SetAsBox(50.0f, 80.0f);
 		def->shape = &dynamicBox;
 		def->filter.groupIndex = 2;
 		def->filter.categoryBits = 0x0002;
@@ -328,6 +328,7 @@ public:
 		fixture->shape = &bulletShape;
 		fixture->filter.groupIndex = 2;
 		fixture->filter.categoryBits = 0x0002;
+		// si se elimina el maskbit las balas colisionan con las plataformas y con el sensor
 		fixture->filter.maskBits = 0x0004;
 		fixture->userData = this->bullet;
 		this->bullets[i]->CreateFixture(fixture);

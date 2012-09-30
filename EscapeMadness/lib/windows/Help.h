@@ -31,9 +31,6 @@ public:
 	}
 
 	int Loop() {
-		if (Current != Structure::HELP) {
-			this->Cleanup();
-		}
 		return Current;
 	}
 

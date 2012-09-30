@@ -50,9 +50,6 @@ public:
 	}
 
 	int Loop() {
-		if (Current != Structure::INGAME) {
-			this->Cleanup();
-		}
 		/*
 		 if (playFirst == false) {
 		 Mix_PlayMusic(music, -1);
@@ -85,6 +82,11 @@ public:
 		}
 
 		lvl->Loop();
+
+
+		if (Current != Structure::INGAME) {
+			this->Cleanup();
+		}
 
 		return Current;
 
