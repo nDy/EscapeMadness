@@ -31,7 +31,6 @@
 								<option id="gnu.cpp.compiler.option.include.paths.408390584" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/include/"/>
 									<listOptionValue builtIn="false" value="/usr/include/c++/4.7.1"/>
-									<listOptionValue builtIn="false" value="/usr/include/c++/4.7"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.300938833" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -lm" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1254298472" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -54,7 +53,7 @@
 									<listOptionValue builtIn="false" value="SDL"/>
 									<listOptionValue builtIn="false" value="SDL_ttf"/>
 								</option>
-								<option id="gnu.cpp.link.option.paths.1743978330" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths"/>
+								<option id="gnu.cpp.link.option.paths.1743978330" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 								<option id="gnu.cpp.link.option.flags.1228271364" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-lm" valueType="string"/>
 								<option id="gnu.cpp.link.option.other.1420091053" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList">
 									<listOptionValue builtIn="false" value="-lm"/>
@@ -67,7 +66,6 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1390928509" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
 								<option id="gnu.both.asm.option.include.paths.1396974517" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/include/"/>
-									<listOptionValue builtIn="false" value="/usr/include/c++/4.7"/>
 									<listOptionValue builtIn="false" value="/usr/local/include/"/>
 									<listOptionValue builtIn="false" value="/usr/include/c++/4.7.1"/>
 								</option>
@@ -138,17 +136,22 @@
 		<project id="EscapeMadness.cdt.managedbuild.target.gnu.exe.1058778642" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/EscapeMadness"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/EscapeMadness"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/EscapeMadness"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1430451214;cdt.managedbuild.config.gnu.exe.release.1430451214.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1745966363;cdt.managedbuild.tool.gnu.cpp.compiler.input.63132777">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1882983658;cdt.managedbuild.config.gnu.exe.debug.1882983658.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1532372415;cdt.managedbuild.tool.gnu.c.compiler.input.996169591">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1882983658;cdt.managedbuild.config.gnu.exe.debug.1882983658.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1532372415;cdt.managedbuild.tool.gnu.c.compiler.input.996169591">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1430451214;cdt.managedbuild.config.gnu.exe.release.1430451214.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1745966363;cdt.managedbuild.tool.gnu.cpp.compiler.input.63132777">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1430451214;cdt.managedbuild.config.gnu.exe.release.1430451214.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.431294902;cdt.managedbuild.tool.gnu.c.compiler.input.1575450579">
