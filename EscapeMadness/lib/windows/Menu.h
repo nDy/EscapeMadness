@@ -43,10 +43,10 @@ public:
 
 		music = Mix_LoadMUS("./res/OST/Bonehead - Naked City.wav");
 
-		this->title = new Button((char*) "Escape Madness", 35, 140, Background,
-				150);
-		this->game = new Button((char*) "PRESIONA ESPACIO PARA COMENZAR", 300,
-				340, Background, 40);
+		this->title = new Button((char*) "Escape Madness", 110, 140, Background,
+				100);
+		this->game = new Button((char*) "PRESIONA ESPACIO PARA COMENZAR", 350,
+				340, Background, 20);
 
 		return true;
 	}

@@ -13,7 +13,7 @@ class InGame: public Event {
 private:
 	Level *lvl;
 	SDL_Surface* img;
-//	Mix_Music *music;
+	Mix_Music *music;
 	int Current;
 	int Lifes;
 	bool MoveRight;
@@ -22,7 +22,7 @@ private:
 	bool finished;
 	bool gameOver;
 	int gameOverCount;
-//	bool playFirst;
+	bool playFirst;
 
 public:
 	InGame(int id) {
@@ -31,7 +31,7 @@ public:
 		MoveRight = false;
 		MoveLeft = false;
 		gameOverCount = 0;
-		//playFirst = false;
+		playFirst = false;
 
 	}
 
@@ -39,24 +39,24 @@ public:
 
 		lvl = new Level();
 		lvl->Init();
-		/*
+
 		 if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
 		 return false;
 		 }
 
-		 music = Mix_LoadMUS("./res/OST/chimaira.wav");
-		 */
+		 music = Mix_LoadMUS("./res/OST/Zandback.ogg");
+
 		this->img = Surface::Load((char*) "./res/heart.png");
 		return true;
 	}
 
 	int Loop() {
-		/*
+
 		 if (playFirst == false) {
-		 Mix_PlayMusic(music, -1);
-		 playFirst = true;
+			 Mix_PlayMusic(music, -1);
+			 playFirst = true;
 		 }
-		 */
+
 
 		if (gameOver) {
 			gameOverCount++;

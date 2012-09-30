@@ -15,17 +15,25 @@ private:
 	SDL_Surface* Background;
 	TextBubble* tb;
 	int Current;
+	Mix_Music *music;
+	bool playFirst;
 
 public:
 
 	Story(int id) {
 		Current = id;
-
+		playFirst = false;
 	}
 
 	bool Init() {
 		Background = Surface::Load("./res/Fondos/white.jpg");
 		tb = new TextBubble((char *) "Story", 200, 220, Background, 20);
+
+		if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+			return false;
+		}
+
+		music = Mix_LoadMUS("./res/OST/09 The Nurse Who Loved Me.wav");
 
 		if (Background == NULL) {
 			return false;
@@ -38,6 +46,11 @@ public:
 
 		if (Current != Structure::STORY) {
 			this->Cleanup();
+		}
+
+		if (playFirst == false) {
+			Mix_PlayMusic(music, -1);
+			playFirst = true;
 		}
 
 		return Current;
