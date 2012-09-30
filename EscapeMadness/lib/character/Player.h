@@ -85,15 +85,25 @@ public:
 
 		for (int i = 0; i < 50; i++) {
 			if (this->bullets[i] != NULL) {
-				this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 70));
-				for (b2ContactEdge* ce = this->bullets[i]->GetContactList(); ce;
-						ce = ce->next) {
-					{
-						this->bullets[i]->SetActive(false);
-						this->world->DestroyBody(this->bullets[i]);
-						this->bullets[i] = NULL;
-					}
+				if (this->bullets[i]->GetTransform().p.x
+						> this->body->GetTransform().p.x + 1024
+						|| this->bullets[i]->GetTransform().p.y < 0
+						|| this->bullets[i]->GetTransform().p.y > 768) {
+					this->bullets[i]->SetActive(false);
+					this->world->DestroyBody(this->bullets[i]);
+					this->bullets[i] = NULL;
+				} else {
 
+					this->bullets[i]->ApplyForceToCenter(b2Vec2(0, 70));
+					for (b2ContactEdge* ce = this->bullets[i]->GetContactList();
+							ce; ce = ce->next) {
+						{
+							this->bullets[i]->SetActive(false);
+							this->world->DestroyBody(this->bullets[i]);
+							this->bullets[i] = NULL;
+						}
+
+					}
 				}
 
 			}
@@ -103,34 +113,57 @@ public:
 
 	bool Init() {
 
-		this->img[0] = Surface::Load((char*) "./res/Player/Standing/Stand1.png");
-		this->img[1] = Surface::Load((char*) "./res/Player/Standing/Stand2.png");
-		this->img[2] = Surface::Load((char*) "./res/Player/Standing/Stand3.png");
-		this->img[3] = Surface::Load((char*) "./res/Player/Standing/Stand4.png");
+		this->img[0] = Surface::Load(
+				(char*) "./res/Player/Standing/Stand1.png");
+		this->img[1] = Surface::Load(
+				(char*) "./res/Player/Standing/Stand2.png");
+		this->img[2] = Surface::Load(
+				(char*) "./res/Player/Standing/Stand3.png");
+		this->img[3] = Surface::Load(
+				(char*) "./res/Player/Standing/Stand4.png");
 
-		this->imgLeft[0] = Surface::Load((char*) "./res/Player/Standing/StandLeft1.png");
-		this->imgLeft[1] = Surface::Load((char*) "./res/Player/Standing/StandLeft2.png");
-		this->imgLeft[2] = Surface::Load((char*) "./res/Player/Standing/StandLeft3.png");
-		this->imgLeft[3] = Surface::Load((char*) "./res/Player/Standing/StandLeft4.png");
+		this->imgLeft[0] = Surface::Load(
+				(char*) "./res/Player/Standing/StandLeft1.png");
+		this->imgLeft[1] = Surface::Load(
+				(char*) "./res/Player/Standing/StandLeft2.png");
+		this->imgLeft[2] = Surface::Load(
+				(char*) "./res/Player/Standing/StandLeft3.png");
+		this->imgLeft[3] = Surface::Load(
+				(char*) "./res/Player/Standing/StandLeft4.png");
 
-		this->walkImg[0] = Surface::Load((char*) "./res/Player/Walking/Walk1.png");
-		this->walkImg[1] = Surface::Load((char*) "./res/Player/Walking/Walk2.png");
-		this->walkImg[2] = Surface::Load((char*) "./res/Player/Walking/Walk3.png");
-		this->walkImg[3] = Surface::Load((char*) "./res/Player/Walking/Walk4.png");
-		this->walkImg[4] = Surface::Load((char*) "./res/Player/Walking/Walk5.png");
-		this->walkImg[5] = Surface::Load((char*) "./res/Player/Walking/Walk6.png");
-		this->walkImg[6] = Surface::Load((char*) "./res/Player/Walking/Walk7.png");
-		this->walkImg[7] = Surface::Load((char*) "./res/Player/Walking/Walk8.png");
+		this->walkImg[0] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk1.png");
+		this->walkImg[1] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk2.png");
+		this->walkImg[2] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk3.png");
+		this->walkImg[3] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk4.png");
+		this->walkImg[4] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk5.png");
+		this->walkImg[5] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk6.png");
+		this->walkImg[6] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk7.png");
+		this->walkImg[7] = Surface::Load(
+				(char*) "./res/Player/Walking/Walk8.png");
 
-		this->walkImgLeft[0] = Surface::Load((char*) "./res/Player/Walking/WalkLeft1.png");
-		this->walkImgLeft[1] = Surface::Load((char*) "./res/Player/Walking/WalkLeft2.png");
-		this->walkImgLeft[2] = Surface::Load((char*) "./res/Player/Walking/WalkLeft3.png");
-		this->walkImgLeft[3] = Surface::Load((char*) "./res/Player/Walking/WalkLeft4.png");
-		this->walkImgLeft[4] = Surface::Load((char*) "./res/Player/Walking/WalkLeft5.png");
-		this->walkImgLeft[5] = Surface::Load((char*) "./res/Player/Walking/WalkLeft6.png");
-		this->walkImgLeft[6] = Surface::Load((char*) "./res/Player/Walking/WalkLeft7.png");
-		this->walkImgLeft[7] = Surface::Load((char*) "./res/Player/Walking/WalkLeft8.png");
-
+		this->walkImgLeft[0] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft1.png");
+		this->walkImgLeft[1] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft2.png");
+		this->walkImgLeft[2] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft3.png");
+		this->walkImgLeft[3] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft4.png");
+		this->walkImgLeft[4] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft5.png");
+		this->walkImgLeft[5] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft6.png");
+		this->walkImgLeft[6] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft7.png");
+		this->walkImgLeft[7] = Surface::Load(
+				(char*) "./res/Player/Walking/WalkLeft8.png");
 
 		this->bullet = Surface::Load((char*) "./res/Fireball.png");
 
@@ -150,37 +183,45 @@ public:
 
 	void Render(SDL_Surface* Display, float camera) {
 
-		if (moving){
+		if (moving) {
 
-			if (movementOrientation == 0){
+			if (movementOrientation == 0) {
 
 				Surface::Draw(Display, this->walkImg[walkingFrame],
-							this->body->GetTransform().p.x - camera - this->walkImg[walkingFrame]->w/2,
-							Display->h - this->body->GetTransform().p.y - this->walkImg[walkingFrame]->h/2);
+						this->body->GetTransform().p.x - camera
+								- this->walkImg[walkingFrame]->w / 2,
+						Display->h - this->body->GetTransform().p.y
+								- this->walkImg[walkingFrame]->h / 2);
 			}
 
-			if (movementOrientation == 1){
+			if (movementOrientation == 1) {
 
 				Surface::Draw(Display, this->walkImgLeft[walkingFrame],
-							this->body->GetTransform().p.x - camera - this->walkImgLeft[walkingFrame]->w/2,
-							Display->h - this->body->GetTransform().p.y - this->walkImgLeft[walkingFrame]->h/2);
+						this->body->GetTransform().p.x - camera
+								- this->walkImgLeft[walkingFrame]->w / 2,
+						Display->h - this->body->GetTransform().p.y
+								- this->walkImgLeft[walkingFrame]->h / 2);
 			}
 
 		} else {
 
-			if (movementOrientation == 0){
+			if (movementOrientation == 0) {
 
 				Surface::Draw(Display, this->img[standingFrame],
-						this->body->GetTransform().p.x - camera - this->img[standingFrame]->w/2,
-						Display->h - this->body->GetTransform().p.y - this->img[standingFrame]->h/2);
+						this->body->GetTransform().p.x - camera
+								- this->img[standingFrame]->w / 2,
+						Display->h - this->body->GetTransform().p.y
+								- this->img[standingFrame]->h / 2);
 
 			}
 
-			if (movementOrientation == 1){
+			if (movementOrientation == 1) {
 
 				Surface::Draw(Display, this->imgLeft[standingFrame],
-						this->body->GetTransform().p.x - camera - this->imgLeft[standingFrame]->w/2,
-						Display->h - this->body->GetTransform().p.y - this->imgLeft[standingFrame]->h/2);
+						this->body->GetTransform().p.x - camera
+								- this->imgLeft[standingFrame]->w / 2,
+						Display->h - this->body->GetTransform().p.y
+								- this->imgLeft[standingFrame]->h / 2);
 
 			}
 		}
@@ -216,17 +257,16 @@ public:
 
 	void Loop() {
 
-
-		if (sec % 10 == 0){
+		if (sec % 10 == 0) {
 			standingFrame++;
-			if (standingFrame > 3){
+			if (standingFrame > 3) {
 				standingFrame = 0;
 			}
 		}
 
-		if (sec % 10 == 0){
+		if (sec % 10 == 0) {
 			walkingFrame++;
-			if (walkingFrame > 7){
+			if (walkingFrame > 7) {
 				walkingFrame = 0;
 			}
 		}
@@ -270,7 +310,8 @@ public:
 
 	void moveRight() {
 		movementOrientation = 0;
-		body->ApplyLinearImpulse(b2Vec2(300, body->GetLinearVelocity().y), b2Vec2(0, 0));
+		body->ApplyForce(b2Vec2(300, body->GetLinearVelocity().y),
+				b2Vec2(0, 0));
 		moving = true;
 
 	}
@@ -278,7 +319,8 @@ public:
 	void moveLeft() {
 		//body->ApplyLinearImpulse(b2Vec2(-5, 0), b2Vec2(0, 0));
 		movementOrientation = 1;
-		body->ApplyLinearImpulse(b2Vec2(-300, body->GetLinearVelocity().y), b2Vec2(0, 0));
+		body->ApplyForce(b2Vec2(-300, body->GetLinearVelocity().y),
+				b2Vec2(0, 0));
 		moving = true;
 
 	}
