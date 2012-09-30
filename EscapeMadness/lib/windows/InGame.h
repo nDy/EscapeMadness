@@ -9,7 +9,7 @@
 #include "../character/BasicCharacter.h"
 #include "../platform/Platform.h"
 
-class InGame: public Event, public Structure {
+class InGame: public Event {
 private:
 	Level *lvl;
 	SDL_Surface* img;
@@ -19,14 +19,17 @@ private:
 	bool MoveRight;
 	bool MoveLeft;
 	bool finished;
+	bool gameOver;
+	int gameOverCount;
 //	bool playFirst;
 
 public:
 	InGame(int id) {
 		Current = id;
-
+		gameOver = false;
 		MoveRight = false;
 		MoveLeft = false;
+		gameOverCount = 0;
 		//playFirst = false;
 
 	}
@@ -56,6 +59,14 @@ public:
 		 playFirst = true;
 		 }
 		 */
+
+		if (gameOver){
+			gameOverCount++;
+			if (gameOverCount % (60 * 3) == 0){
+				Current = Structure::MENU;
+			}
+		}
+
 		if (MoveRight)
 			movePlayer(0);
 
@@ -64,6 +75,14 @@ public:
 
 		if (!MoveLeft && !MoveRight)
 			movePlayer(2);
+
+		if (lvl->getPlayer()->lifes() <= 0) {
+			gameOver = true;
+		}
+
+		if (lvl->getPlayer()->getBody()->GetTransform().p.y < 0){
+				gameOver = true;
+		}
 
 		lvl->Loop();
 
@@ -86,6 +105,10 @@ public:
 
 	void Render(SDL_Surface* Display, float camera = 0) {
 
+		if (isNull()){
+			this->Init();
+		}
+
 		lvl->Render(Display);
 
 		if (lvl->finished()) {
@@ -94,23 +117,33 @@ public:
 			Surface::DrawText("Presiona Escape para continuar", Display, 20, 50,
 					255, 255, 255, 20);
 		}
+
 		//Draw HUD
 
 		for (int i = 0; i < this->lvl->getPlayer()->lifes(); i++) {
 			Surface::Draw(Display, this->img, (i + 1) * 25, 25);
 		}
 
-		if (lvl->getPlayer()->lifes() <= 0) {
-			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255,
-					75);
+		if (gameOver){
+			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255, 75);
 		}
+
 
 	}
 
-	void Cleanup() const {
+	bool isNull(){
+		if (img == NULL){
+			return true;
+		}
+
+		return false;
+	}
+
+	void Cleanup() {
 		lvl->Cleanup();
 		delete lvl;
 		SDL_FreeSurface(this->img);
+		img = NULL;
 //		Mix_FreeMusic(music);
 	}
 

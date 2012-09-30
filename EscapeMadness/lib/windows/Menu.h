@@ -67,6 +67,10 @@ public:
 
 	void Render(SDL_Surface* Display, float camera = 0) {
 
+		if (isNull()){
+			this->Init();
+		}
+
 		Surface::Draw(Display, Background, camera, 0);
 
 		this->game->render();
@@ -75,8 +79,17 @@ public:
 
 	}
 
+	bool isNull(){
+		if (Background == NULL){
+			return true;
+		}
+
+		return false;
+	}
+
 	void Cleanup() {
 		SDL_FreeSurface(Background);
+		Background = NULL;
 		Mix_FreeMusic(music);
 	}
 

@@ -50,9 +50,6 @@ public:
 		//En caso de crash cargando el ingame
 		//Current = Structure::INTRO;
 
-
-
-
 		//Inicializacion de SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 			return false;
