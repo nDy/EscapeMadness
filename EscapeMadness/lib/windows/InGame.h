@@ -18,6 +18,7 @@ private:
 	int Lifes;
 	bool MoveRight;
 	bool MoveLeft;
+	bool Standing;
 	bool finished;
 	bool gameOver;
 	int gameOverCount;
@@ -57,32 +58,36 @@ public:
 		 }
 		 */
 
-		if (gameOver){
+		if (gameOver) {
 			gameOverCount++;
-			if (gameOverCount % (60 * 3) == 0){
+			if (gameOverCount % (60 * 3) == 0) {
 				Current = Structure::MENU;
 			}
 		}
 
-		if (MoveRight)
+		if (MoveRight) {
 			movePlayer(0);
-
-		if (MoveLeft)
+			Standing = false;
+		}
+		if (MoveLeft) {
 			movePlayer(1);
+			Standing = false;
+		}
 
-		if (!MoveLeft && !MoveRight)
+		if (!MoveLeft && !MoveRight && !Standing) {
 			movePlayer(2);
+			Standing = true;
+		}
 
 		if (lvl->getPlayer()->lifes() <= 0) {
 			gameOver = true;
 		}
 
-		if (lvl->getPlayer()->getBody()->GetTransform().p.y < 0){
-				gameOver = true;
+		if (lvl->getPlayer()->getBody()->GetTransform().p.y < 0) {
+			gameOver = true;
 		}
 
 		lvl->Loop();
-
 
 		if (Current != Structure::INGAME) {
 			this->Cleanup();
@@ -102,12 +107,13 @@ public:
 			break;
 		case 2:
 			this->lvl->getPlayer()->StopX();
+			break;
 		}
 	}
 
 	void Render(SDL_Surface* Display, float camera = 0) {
 
-		if (isNull()){
+		if (isNull()) {
 			this->Init();
 		}
 
@@ -126,15 +132,15 @@ public:
 			Surface::Draw(Display, this->img, (i + 1) * 25, 25);
 		}
 
-		if (gameOver){
-			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255, 75);
+		if (gameOver) {
+			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255,
+					75);
 		}
-
 
 	}
 
-	bool isNull(){
-		if (img == NULL){
+	bool isNull() {
+		if (img == NULL) {
 			return true;
 		}
 
@@ -149,7 +155,6 @@ public:
 //		Mix_FreeMusic(music);
 	}
 
-
 	//Events
 
 	void OnInputFocus() {
@@ -160,8 +165,8 @@ public:
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
-		if (sym == SDLK_w){
-				this->lvl->getPlayer()->jump();
+		if (sym == SDLK_w) {
+			this->lvl->getPlayer()->jump();
 		}
 		if (sym == SDLK_d)
 			this->MoveRight = true;
