@@ -23,6 +23,7 @@ class Platform {
 private:
 	b2Body* body;
 	SDL_Surface* img;
+	SDL_Surface* bgImg;
 	short type;
 	float movementlength;
 	int x, y;
@@ -33,7 +34,7 @@ public:
 		b2BodyDef* bodyDef;
 		bodyDef = new b2BodyDef();
 		bodyDef->type = b2_kinematicBody;
-		bodyDef->position.Set(x, y);
+		bodyDef->position.Set(x, y / 2);
 
 		this->body = world->CreateBody(bodyDef);
 
@@ -104,11 +105,16 @@ public:
 	}
 
 	bool Init() {
-		this->img = Surface::Load((char*) "./res/platform.png");
+		this->img = Surface::Load((char*) "./res/Platform/TopPlatform.png");
+		this->bgImg = Surface::Load((char*) "./res/Platform/BgPlatform.png");
 		b2FixtureDef* def;
 		def = new b2FixtureDef();
 		b2PolygonShape dynamicBox;
-		dynamicBox.SetAsBox(LENGTH / 2, 12.0f);
+		if (this->type == STATIC){
+			dynamicBox.SetAsBox(LENGTH / 2, this->body->GetTransform().p.y);
+		} else {
+			dynamicBox.SetAsBox(LENGTH / 2, 12.0f);
+		}
 		def->shape = &dynamicBox;
 		def->filter.groupIndex = 1;
 		this->body->CreateFixture(def);
@@ -158,18 +164,25 @@ public:
 	}
 
 	void Render(SDL_Surface* Display, float PlayerPos) {
+		int i = this->body->GetTransform().p.y;\
+
+		if (this->type == STATIC)
+			i*=2;
+
 		Surface::Draw(Display, this->img,
 				this->body->GetTransform().p.x - PlayerPos - this->img->w / 2,
-				Display->h - this->body->GetTransform().p.y - this->img->h / 2);
+				Display->h - i - this->img->h / 2);
+
 		if (this->type == STATIC) {
+
 			//reemplazar this img con la imagen del relleno
-			int i = this->body->GetTransform().p.y;
+
 			do {
-				i -= this->img->h;
-				Surface::Draw(Display, this->img,
+				i -= this->bgImg->h;
+				Surface::Draw(Display, this->bgImg,
 						this->body->GetTransform().p.x - PlayerPos
-								- this->img->w / 2,
-						Display->h - i - this->img->h / 2);
+								- this->bgImg->w / 2,
+						Display->h - i - this->bgImg->h / 2);
 			} while (i > 0);
 		}
 	}

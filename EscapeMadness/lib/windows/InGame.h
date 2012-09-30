@@ -60,9 +60,6 @@ public:
 
 		if (gameOver) {
 			gameOverCount++;
-			if (gameOverCount % (60 * 3) == 0) {
-				Current = Structure::MENU;
-			}
 		}
 
 		if (MoveRight) {
