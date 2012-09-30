@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "../common/Level.h"
+#include "../common/BossLevel.h"
 #include <SDL/SDL.h>
 #include <Box2D/Box2D.h>
 #include "../common/Structure.h"
@@ -12,6 +13,7 @@
 class InGame: public Event {
 private:
 	Level *lvl;
+	BossLevel *blvl;
 	SDL_Surface* img;
 	Mix_Music *music;
 	int Current;
@@ -23,6 +25,7 @@ private:
 	bool gameOver;
 	int gameOverCount;
 	bool playFirst;
+	int currentDisplay; // 0 para Level, 1 para bossLevel, 2 para creditos
 
 public:
 	InGame(int id) {
@@ -30,8 +33,8 @@ public:
 		gameOver = false;
 		MoveRight = false;
 		MoveLeft = false;
-		gameOverCount = 0;
 		playFirst = false;
+		currentDisplay = 0;
 
 	}
 
@@ -39,12 +42,14 @@ public:
 
 		lvl = new Level();
 		lvl->Init();
+		blvl = new BossLevel();
+		blvl->Init();
 
-		 if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
-		 return false;
-		 }
+		if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+			return false;
+		}
 
-		 music = Mix_LoadMUS("./res/OST/Zandback.ogg");
+		music = Mix_LoadMUS("./res/OST/Zandback.ogg");
 
 		this->img = Surface::Load((char*) "./res/heart.png");
 		return true;
@@ -52,14 +57,9 @@ public:
 
 	int Loop() {
 
-		 if (playFirst == false) {
-			 Mix_PlayMusic(music, -1);
-			 playFirst = true;
-		 }
-
-
-		if (gameOver) {
-			gameOverCount++;
+		if (playFirst == false) {
+			Mix_PlayMusic(music, -1);
+			playFirst = true;
 		}
 
 		if (MoveRight) {
@@ -76,15 +76,33 @@ public:
 			Standing = true;
 		}
 
-		if (lvl->getPlayer()->lifes() <= 0) {
-			gameOver = true;
-		}
+		switch (currentDisplay) {
+		case 0:
+			if (lvl->getPlayer()->lifes() <= 0) {
+				gameOver = true;
+			}
 
-		if (lvl->getPlayer()->getBody()->GetTransform().p.y < 0) {
-			gameOver = true;
-		}
+			if (lvl->getPlayer()->getBody()->GetTransform().p.y < 0) {
+				gameOver = true;
+			}
 
-		lvl->Loop();
+			lvl->Loop();
+
+			break;
+		case 1:
+			if (blvl->getPlayer()->lifes() <= 0) {
+				gameOver = true;
+			}
+
+			if (blvl->getPlayer()->getBody()->GetTransform().p.y < 0) {
+				gameOver = true;
+			}
+
+			blvl->Loop();
+			break;
+		case 2:
+			break;
+		}
 
 		if (Current != Structure::INGAME) {
 			this->Cleanup();
@@ -95,17 +113,35 @@ public:
 	}
 
 	void movePlayer(int LR) {
-		switch (LR) {
+		switch (currentDisplay) {
 		case 0:
-			this->lvl->getPlayer()->moveRight();
+			switch (LR) {
+			case 0:
+				this->lvl->getPlayer()->moveRight();
+				break;
+			case 1:
+				this->lvl->getPlayer()->moveLeft();
+				break;
+			case 2:
+				this->lvl->getPlayer()->StopX();
+				break;
+			}
 			break;
 		case 1:
-			this->lvl->getPlayer()->moveLeft();
-			break;
-		case 2:
-			this->lvl->getPlayer()->StopX();
+			switch (LR) {
+			case 0:
+				this->blvl->getPlayer()->moveRight();
+				break;
+			case 1:
+				this->blvl->getPlayer()->moveLeft();
+				break;
+			case 2:
+				this->blvl->getPlayer()->StopX();
+				break;
+			}
 			break;
 		}
+
 	}
 
 	void Render(SDL_Surface* Display, float camera = 0) {
@@ -113,21 +149,30 @@ public:
 		if (isNull()) {
 			this->Init();
 		}
+		switch (currentDisplay) {
+		case 0:
+			lvl->Render(Display);
 
-		lvl->Render(Display);
+			for (int i = 0; i < this->lvl->getPlayer()->lifes(); i++) {
+				Surface::Draw(Display, this->img, (i + 1) * 25, 25);
+			}
 
-		if (lvl->finished()) {
-			Surface::DrawText("Nivel terminado", Display, 20, 20, 255, 255, 255,
-					20);
-			Surface::DrawText("Presiona Escape para continuar", Display, 20, 50,
-					255, 255, 255, 20);
+			break;
+		case 1:
+			blvl->Render(Display);
+
+			for (int i = 0; i < this->blvl->getPlayer()->lifes(); i++) {
+				Surface::Draw(Display, this->img, (i + 1) * 25, 25);
+			}
+
+			break;
+		}
+
+		if (lvl->finished() && this->currentDisplay == 0) {
+			// this->currentDisplay = 1; crashea al tratar de entrar a bosslvl
 		}
 
 		//Draw HUD
-
-		for (int i = 0; i < this->lvl->getPlayer()->lifes(); i++) {
-			Surface::Draw(Display, this->img, (i + 1) * 25, 25);
-		}
 
 		if (gameOver) {
 			Surface::DrawText("Game Over", Display, 350, 350, 255, 255, 255,
@@ -146,10 +191,12 @@ public:
 
 	void Cleanup() {
 		lvl->Cleanup();
+		blvl->Cleanup();
 		delete lvl;
+		delete blvl;
 		SDL_FreeSurface(this->img);
 		img = NULL;
-//		Mix_FreeMusic(music);
+		Mix_FreeMusic(music);
 	}
 
 	//Events
@@ -163,7 +210,15 @@ public:
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
 		if (sym == SDLK_w) {
-			this->lvl->getPlayer()->jump();
+			switch (currentDisplay) {
+			case 0:
+				this->lvl->getPlayer()->jump();
+				break;
+			case 1:
+				this->blvl->getPlayer()->jump();
+				break;
+			}
+
 		}
 		if (sym == SDLK_d)
 			this->MoveRight = true;
@@ -244,6 +299,7 @@ public:
 	void OnUser(Uint8 type, int code, void* data1, void* data2) {
 	}
 
-};
+}
+;
 
 #endif /* INGAME_H_ */

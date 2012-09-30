@@ -17,17 +17,19 @@ private:
 	int Current;
 	Mix_Music *music;
 	bool playFirst;
+	int currentTb;
 
 public:
 
 	Story(int id) {
 		Current = id;
 		playFirst = false;
+		currentTb = 0;
 	}
 
 	bool Init() {
 		Background = Surface::Load("./res/Fondos/white.jpg");
-		tb = new TextBubble((char *) "Story", 200, 220, Background, 20);
+		tb = new TextBubble((char *) "Te sientes bien?", 1024 / 2, 0, 20);
 
 		if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
 			return false;
@@ -58,17 +60,17 @@ public:
 
 	void Render(SDL_Surface* Display, float camera = 0) {
 
-		if(isNull()){
+		if (isNull()) {
 			this->Init();
 		}
 
 		Surface::Draw(Display, Background, 0, 0);
-		tb->render();
+		tb->render(Display);
 
 	}
 
-	bool isNull(){
-		if (Background == NULL){
+	bool isNull() {
+		if (Background == NULL) {
 			return true;
 		}
 
@@ -90,7 +92,62 @@ public:
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 		if (sym == SDLK_SPACE)
-			Current = Structure::INGAME;
+			switch (currentTb) {
+			case 0:
+				this->tb->switchText((char*) "*Balbucea*");
+				this->tb->switchPos(0, 768/2);
+				this->currentTb++;
+				break;
+			case 1:
+				this->tb->switchText((char*) "No puedo verte asi");
+				this->tb->switchPos(1024/2, 0);
+				this->currentTb++;
+				break;
+			case 2:
+				this->tb->switchText((char*) "Que sucede?");
+				this->tb->switchPos(0, 768/2);
+				this->currentTb++;
+				break;
+			case 3:
+				this->tb->switchText((char*) "Necesitas salir de aqui");
+				this->tb->switchPos(1024/2, 0);
+				this->currentTb++;
+				break;
+			case 4:
+				this->tb->switchText((char*) "Pero...");
+				this->tb->switchPos(0, 768/2);
+				this->currentTb++;
+				break;
+			case 5:
+				this->tb->switchText((char*) "No, No hay tiempo para esto...");
+				this->tb->switchPos(1024/2, 0);
+				this->currentTb++;
+				break;
+			case 6:
+				this->tb->switchText((char*) "Que pretendes hacer con eso?");
+				this->tb->switchPos(0, 768/2);
+				this->currentTb++;
+				break;
+			case 7:
+				this->tb->switchText((char*) "No puedo estar aqui cuando despiertes");
+				this->tb->switchPos(1024/2, 0);
+				this->currentTb++;
+				break;
+			case 8:
+				this->tb->switchText((char*) "Por que?");
+				this->tb->switchPos(0, 768/2);
+				this->currentTb++;
+				break;
+			case 9:
+				this->tb->switchText((char*) "No es seguro... Para mi...");
+				this->tb->switchPos(1024/2, 0);
+				this->currentTb++;
+				break;
+			case 10:
+				Current = Structure::INGAME;
+				break;
+			}
+
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {

@@ -14,7 +14,6 @@
 
 class TextBubble {
 
-	SDL_Surface* background;
 	SDL_Surface* frame;
 	int x;
 	int y;
@@ -23,8 +22,7 @@ class TextBubble {
 
 public:
 
-	TextBubble (char* input, int x, int y, SDL_Surface* Background, int size) {
-		this->background = Background;
+	TextBubble(char* input, int x, int y, int size) {
 		this->x = x;
 		this->y = y;
 		this->text = input;
@@ -33,15 +31,17 @@ public:
 
 	}
 
-	void render() {
-		Surface::Draw(background, frame, x, y);
-		Surface::DrawText(text, frame, 10, 10, 255, 255, 255, size);
+	void switchText(char* input) {
+		this->text = input;
+	}
+	void switchPos(int x, int y) {
+		this->x = x;
+		this->y = y;
 	}
 
-	bool isClicked(int mX, int mY) {
-		if(mX >= x && mX <= x + 50 && mY >= y && mY <= y + 50)
-			return true;
-		return false;
+	void render(SDL_Surface* Display) {
+		Surface::Draw(Display, frame, x, y);
+		Surface::DrawText(text, Display, x + 10, y + 10, 255, 255, 255, size);
 	}
 
 };
