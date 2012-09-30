@@ -26,6 +26,7 @@ private:
 	short type;
 	float movementlength;
 	int x, y;
+	bool up;
 
 public:
 	Platform(int x, int y, b2World*& world) {
@@ -52,6 +53,9 @@ public:
 		this->movementlength = 2 * LENGTH;
 		this->x = x;
 		this->y = y;
+		//up true inicia el movimiento de la plataforma hacia arriba
+		//o hacia la derecha dependiendo de la orientacion asignada
+		this->up = true;
 	}
 
 	Platform(int x, int y, float angle, b2World*& world) {
@@ -113,7 +117,6 @@ public:
 	}
 
 	void Loop() {
-		bool up;
 		switch (type) {
 
 		case STATIC:
@@ -134,22 +137,18 @@ public:
 			break;
 
 		case HORIZONTAL:
-			/*	if (body.getPosition().x
-			 >= initPos.x + this.length
-			 - Width * Math.cos(angle * Math.PI / 180))
-			 up = false;
+			if (body->GetTransform().p.x >= x + LENGTH)
+				up = false;
 
-			 else if (body.getPosition().x <= initPos.x)
-			 up = true;
+			else if (body->GetTransform().p.x <= x)
+				up = true;
 
-			 if (up)
-			 body.m_linearVelocity.x = 8;
+			if (up)
+				body->SetLinearVelocity(b2Vec2(8, 0));
 
-			 if (!up)
-			 body.m_linearVelocity.x = -8;
+			if (!up)
+				body->SetLinearVelocity(b2Vec2(-8, 0));
 
-			 body.m_linearVelocity.y = 0;
-			 */
 			break;
 
 		default:
