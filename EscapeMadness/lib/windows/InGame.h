@@ -176,8 +176,10 @@ public:
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
-		this->MoveRight = false;
-		this->MoveLeft = false;
+		if (sym == SDLK_d || sym == SDLK_a) {
+			this->MoveRight = false;
+			this->MoveLeft = false;
+		}
 	}
 
 	void OnMouseFocus() {
