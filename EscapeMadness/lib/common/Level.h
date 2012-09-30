@@ -52,8 +52,8 @@ public:
 		player = new Player(200, 405, world);
 
 		enemy[0] = new Enemy(1330, 305, world, 2);
-		enemy[1] = new Enemy(2250, 505, world, 4);
-		enemy[2] = new Enemy(2550, 605, world, 3);
+		enemy[1] = new Enemy(2230, 505, world, 4);
+		enemy[2] = new Enemy(2530, 605, world, 3);
 		enemy[3] = new Enemy(4050, 605, world, 1);
 		enemy[4] = new Enemy(5250, 705, world, 2);
 		enemy[5] = new Enemy(5550, 705, world, 2);

@@ -18,6 +18,7 @@
 class Enemy {
 private:
 	b2Body* body;
+	b2Body* platform;
 	b2Body** bullets;
 	SDL_Surface* img;
 	SDL_Surface* bullet;
@@ -25,6 +26,7 @@ private:
 	b2World* world;
 	int life;
 	int shoot;
+	int movementOrientation;
 
 public:
 	Enemy(float x, float y, b2World*& world, int lifes) {
@@ -37,6 +39,8 @@ public:
 		this->world = world;
 		this->life = lifes;
 		this->shoot = 0;
+		this->platform = NULL;
+		this->movementOrientation = 1;
 	}
 
 	void bulletLoop() {
@@ -118,7 +122,7 @@ public:
 		b2PolygonShape dynamicBox;
 		b2CircleShape sensorShape;
 		dynamicBox.SetAsBox(50.0f, 100.0f);
-		sensorShape.m_radius = 200;
+		sensorShape.m_radius = 400;
 		sensor->shape = &sensorShape;
 		sensor->isSensor = true;
 		def->shape = &dynamicBox;
@@ -163,6 +167,31 @@ public:
 		delete this;
 	}
 
+	void IAloop(){
+
+		if (this->platform == NULL){
+			for (b2ContactEdge* ce = this->body->GetContactList(); ce; ce = ce->next){
+
+				b2Contact* c = ce->contact;
+
+				if (c->GetFixtureA()->GetFilterData().groupIndex == 1) {
+					this->platform = c->GetFixtureA()->GetBody();
+				}
+			}
+		}
+
+		if (this->platform != NULL){
+			if ( this->body->GetTransform().p.x < this->platform->GetTransform().p.x  - 100){
+				this->movementOrientation = 0;
+			} else 	if ( this->body->GetTransform().p.x > this->platform->GetTransform().p.x  + 100){
+				this->movementOrientation = 1;
+			}
+
+		}
+
+
+	}
+
 	void Loop() {
 
 		switch (wasHit()){
@@ -175,6 +204,17 @@ public:
 
 			case 2:
 				life = 0;
+				break;
+		}
+
+		this->IAloop();
+
+		switch (movementOrientation) {
+			case 0:
+				this->moveRight();
+				break;
+			case 1:
+				this->moveLeft();
 				break;
 		}
 
@@ -199,12 +239,12 @@ public:
 
 	void moveRight() {
 //body->ApplyLinearImpulse(b2Vec2(5, 0), b2Vec2(0, 0));
-		body->ApplyForceToCenter(b2Vec2(20, 0));
+		body->ApplyForceToCenter(b2Vec2(300, 0));
 	}
 
 	void moveLeft() {
 //body->ApplyLinearImpulse(b2Vec2(-5, 0), b2Vec2(0, 0));
-		body->ApplyForceToCenter(b2Vec2(-20, 0));
+		body->ApplyForceToCenter(b2Vec2(-300, 0));
 	}
 
 	void Stop() {
