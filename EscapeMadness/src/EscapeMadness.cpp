@@ -45,7 +45,7 @@ public:
 
 	bool Init() {
 
-		Current = Structure::INGAME;
+		Current = Structure::STORY;
 
 		//En caso de crash cargando el ingame
 		//Current = Structure::INTRO;

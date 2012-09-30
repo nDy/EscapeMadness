@@ -4,6 +4,7 @@
 #include <SDL/SDL.h>
 #include "Event.h"
 #include "../common/Structure.h"
+#include "../common/TextBubble.h"
 #include "../common/Button.h"
 #include <SDL/SDL_mixer.h>
 
@@ -12,16 +13,19 @@ class Story: public Event {
 private:
 
 	SDL_Surface* Background;
+	TextBubble* tb;
 	int Current;
 
 public:
 
 	Story(int id) {
 		Current = id;
+
 	}
 
 	bool Init() {
-		Background = Surface::Load("./res/Fondos/back.jpg");
+		Background = Surface::Load("./res/Fondos/white.jpg");
+		tb = new TextBubble((char *) "Hello akjsdsakjdkasda", 300, 300, Background, 20);
 
 		if (Background == NULL) {
 			return false;
@@ -45,7 +49,8 @@ public:
 			this->Init();
 		}
 
-		Surface::Draw(Display, Background, camera, 0);
+		Surface::Draw(Display, Background, 0, 0);
+		tb->render();
 
 	}
 
