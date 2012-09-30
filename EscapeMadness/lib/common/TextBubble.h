@@ -35,7 +35,7 @@ public:
 
 	void render() {
 		Surface::Draw(background, frame, x, y);
-		Surface::DrawText(text, frame, x, y, 255, 255, 255, size);
+		Surface::DrawText(text, frame, 10, 10, 255, 255, 255, size);
 	}
 
 	bool isClicked(int mX, int mY) {

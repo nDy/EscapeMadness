@@ -25,7 +25,7 @@ public:
 
 	bool Init() {
 		Background = Surface::Load("./res/Fondos/white.jpg");
-		tb = new TextBubble((char *) "Hello akjsdsakjdkasda", 300, 300, Background, 20);
+		tb = new TextBubble((char *) "Story", 200, 220, Background, 20);
 
 		if (Background == NULL) {
 			return false;

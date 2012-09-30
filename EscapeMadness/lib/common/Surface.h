@@ -44,7 +44,7 @@ public:
 		if (!(TTF_Init() < 0) && !(Dest == NULL)) {
 			TTF_Font* font = NULL;
 			SDL_Color textColor = { r, g, b };
-			font = TTF_OpenFont("./res/Fonts/font.ttf", size);
+			font = TTF_OpenFont("./res/Fonts/TravelingTypewriter.ttf", size);
 			SDL_Surface* message = TTF_RenderText_Blended(font, text, textColor);
 			TTF_CloseFont(font);
 			return Draw(Dest, message, X, Y);
