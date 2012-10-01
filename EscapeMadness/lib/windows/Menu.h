@@ -15,6 +15,7 @@ private:
 	Mix_Music *music;
 	Button* game;
 	Button* title;
+	Button* help;
 	int Current;
 	bool playFirst;
 
@@ -45,8 +46,11 @@ public:
 
 		this->title = new Button((char*) "Escape Madness", 110, 140, Background,
 				100);
-		this->game = new Button((char*) "PRESIONA ESPACIO PARA COMENZAR", 350,
-				340, Background, 20);
+		this->game = new Button((char*) "JUGAR", 450,
+				340, Background, 40);
+
+		this->help = new Button((char*) "CONTROLES", 410,
+						440, Background, 40);
 
 		return true;
 	}
@@ -70,8 +74,8 @@ public:
 		Surface::Draw(Display, Background, camera, 0);
 
 		this->game->render();
-
 		this->title->render();
+		this->help->render();
 
 	}
 
@@ -99,11 +103,6 @@ public:
 	}
 
 	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
-		if (sym == SDLK_SPACE) {
-			Mix_HaltMusic();
-			Mix_CloseAudio();
-			Current = Structure::STORY;
-		}
 	}
 
 	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
@@ -123,6 +122,15 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
+		if (game->isClicked(mX, mY)){
+			Mix_HaltMusic();
+			Mix_CloseAudio();
+			Current = Structure::STORY;
+		}
+
+		if (help->isClicked(mX, mY)){
+			Current = Structure::HELP;
+		}
 
 	}
 

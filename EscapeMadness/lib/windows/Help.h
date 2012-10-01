@@ -7,10 +7,13 @@
 #include <SDL/SDL.h>
 #include <iostream>
 
-class Help: public Event, public Structure {
+class Help: public Event {
+
 private:
 	SDL_Surface* Background;
 	int Current;
+	Button* menu;
+
 public:
 	Help(int id) {
 		Current = id;
@@ -18,7 +21,7 @@ public:
 
 	bool Init() {
 
-		Background = Surface::Load("./res/bg.bmp");
+		Background = Surface::Load("./res/Fondos/back.jpg");
 
 		if (Background == NULL) {
 			return false;
@@ -26,6 +29,9 @@ public:
 		if (TTF_Init() == -1) {
 			return false;
 		}
+
+		this->menu = new Button((char*) "VOLVER", 470, 30, Background,
+						50);
 
 		return true;
 	}
@@ -36,14 +42,19 @@ public:
 
 	void Render(SDL_Surface* Display,float camera=0) {
 
-		Surface::Draw(Display, Background, camera, 0);
+		if (Background == NULL){
+			this->Init();
+		}
 
-		Surface::DrawText("Volver al menu", Display, 20, 20, 255, 255, 255,
-				200);
+		Surface::Draw(Display, Background, camera, 0);
+		this->menu->render();
+		Surface::DrawText("Mover al personaje: WASD", Display, 280, 180, 247, 49, 49, 40);
+		Surface::DrawText("Disparar: click en la pantalla", Display, 230, 280, 247, 49, 49, 40);
 	}
 
-	void Cleanup() const {
+	void Cleanup() {
 		SDL_FreeSurface(Background);
+		Background = NULL;
 	}
 
 	//Events
@@ -74,6 +85,10 @@ public:
 	} //Not implemented
 
 	void OnLButtonDown(int mX, int mY) {
+		if (menu->isClicked(mX, mY)){
+			Current = Structure::MENU;
+			this->Cleanup();
+		}
 	}
 
 	void OnLButtonUp(int mX, int mY) {

@@ -150,10 +150,10 @@ public:
 				up = true;
 
 			if (up)
-				body->SetLinearVelocity(b2Vec2(8, 0));
+				body->SetLinearVelocity(b2Vec2(40, 0));
 
 			if (!up)
-				body->SetLinearVelocity(b2Vec2(-8, 0));
+				body->SetLinearVelocity(b2Vec2(-40, 0));
 
 			break;
 
