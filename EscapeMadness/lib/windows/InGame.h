@@ -169,7 +169,9 @@ public:
 		}
 
 		if (lvl->finished() && this->currentDisplay == 0) {
-			// this->currentDisplay = 1; crashea al tratar de entrar a bosslvl
+			Surface::DrawText("Victoria", Display, 350, 350, 255, 255, 255,
+								75);
+
 		}
 
 		//Draw HUD
